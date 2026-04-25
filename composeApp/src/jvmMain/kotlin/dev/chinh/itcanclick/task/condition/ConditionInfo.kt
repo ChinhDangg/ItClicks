@@ -1,0 +1,10 @@
+package dev.chinh.itcanclick.task.condition
+
+data class ConditionInfo(
+    var rect: java.awt.Rectangle,
+    var originalImage: java.awt.image.BufferedImage,
+    var conditionType: ConditionType,
+    var similarity: Float = 0.85f,
+    var isCore: Boolean = false,
+    var globalSearch: Boolean = false
+)
