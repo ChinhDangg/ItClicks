@@ -5,6 +5,12 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+
+    kotlin("plugin.spring") version "1.9.23"
+
+    // The actual Spring Boot Gradle Plugin
+    id("org.springframework.boot") version "3.5.9"
+    id("io.spring.dependency-management") version "1.1.4"
 }
 
 kotlin {
@@ -31,7 +37,14 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
 
+            implementation("org.springframework.boot:spring-boot-starter")
+
             implementation(libs.opencv.platform)
+
+            val djlVersion = "0.27.0"
+            implementation("ai.djl:api:$djlVersion")
+            implementation("ai.djl.paddlepaddle:paddlepaddle-engine:$djlVersion")
+            implementation("ai.djl.paddlepaddle:paddlepaddle-model-zoo:$djlVersion")
         }
     }
 }
