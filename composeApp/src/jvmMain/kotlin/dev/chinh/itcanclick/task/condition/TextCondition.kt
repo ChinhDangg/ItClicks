@@ -7,13 +7,85 @@ import ai.djl.modality.cv.output.DetectedObjects
 import ai.djl.repository.zoo.Criteria
 import ai.djl.repository.zoo.ZooModel
 import jakarta.annotation.PreDestroy
+import java.awt.Rectangle
+import java.awt.Robot
 import java.awt.image.BufferedImage
+import kotlin.math.max
 
 class TextCondition : Condition, AutoCloseable {
 
-    override fun check(conditionInfo: ConditionInfo): Condition.Result {
-        TODO("Not yet implemented")
+    private val robot : Robot
+
+    constructor(robot: Robot) {
+        this.robot = robot
     }
+
+    override fun check(conditionInfo: ConditionInfo): Condition.Result {
+        if (conditionInfo.conditionType != ConditionType.TEXT) {
+            throw IllegalArgumentException("Condition type must be TEXT")
+        }
+
+        val similarity = checkInRect(conditionInfo.rect, conditionInfo.originalImage)
+        val passed = similarity >= conditionInfo.similarity
+        val conditionResult = if (passed) ConditionResult.PASS else {
+            if (conditionInfo.isCore)
+                ConditionResult.SKIPPABLE
+            ConditionResult.FAIL
+        }
+
+        return Condition.Result(conditionResult, similarity, conditionInfo.rect)
+    }
+
+    fun checkInRect(rect: Rectangle, sourceImage: BufferedImage) : Double {
+        val targetImage = captureCurrentScreen(robot, rect)
+
+        val originalText = extractText(sourceImage)
+        val targetText = extractText(targetImage)
+        return getSimilarity(originalText, targetText)
+    }
+
+    fun getSimilarity(s1: String, s2: String): Double {
+        // Normalize both strings
+        val norm1 = s1.normalizeSpaces()
+        val norm2 = s2.normalizeSpaces()
+
+        // Handle edge cases
+        if (norm1 == norm2) return 1.0
+        if (norm1.isEmpty() || norm2.isEmpty()) return 0.0
+
+        // Calculate Levenshtein distance
+        val distance = levenshteinDistance(norm1, norm2)
+
+        // Normalize the score between 0.0 and 1.0
+        val maxLength = max(norm1.length, norm2.length)
+        return 1.0 - (distance.toDouble() / maxLength)
+    }
+
+    fun String.normalizeSpaces(): String {
+        return this.trim().replace("\\s+".toRegex(), " ")
+    }
+
+    fun levenshteinDistance(s1: String, s2: String): Int {
+        val m = s1.length
+        val n = s2.length
+        val dp = Array(m + 1) { IntArray(n + 1) }
+
+        for (i in 0..m) dp[i][0] = i
+        for (j in 0..n) dp[0][j] = j
+
+        for (i in 1..m) {
+            for (j in 1..n) {
+                val cost = if (s1[i - 1] == s2[j - 1]) 0 else 1
+                dp[i][j] = minOf(
+                    dp[i - 1][j] + 1,      // Deletion
+                    dp[i][j - 1] + 1,      // Insertion
+                    dp[i - 1][j - 1] + cost // Substitution
+                )
+            }
+        }
+        return dp[m][n]
+    }
+
 
     @Volatile private var isDetectionLoaded = false
 
@@ -51,7 +123,7 @@ class TextCondition : Condition, AutoCloseable {
     }
 
     // 3. The Extraction Function
-    fun extractText(bufferedImage: BufferedImage): List<String> {
+    fun extractText(bufferedImage: BufferedImage): String {
         // Convert java.awt.image.BufferedImage to DJL's internal Image format
         val image: Image = ImageFactory.getInstance().fromImage(bufferedImage)
         val extractedStrings = mutableListOf<String>()
@@ -95,7 +167,7 @@ class TextCondition : Condition, AutoCloseable {
             }
         }
 
-        return extractedStrings
+        return extractedStrings.joinToString(" ")
     }
 
     @PreDestroy
