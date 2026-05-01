@@ -1,6 +1,7 @@
 package dev.chinh.itcanclick.task.condition
 
 import dev.chinh.itcanclick.log.log
+import dev.chinh.itcanclick.task.ResultStatus
 import org.bytedeco.javacpp.DoublePointer
 import org.bytedeco.javacpp.Loader
 import org.bytedeco.opencv.global.opencv_core
@@ -23,7 +24,7 @@ class PixelCondition : Condition {
     }
 
 
-    override fun check(conditionInfo: ConditionInfo): Condition.Result {
+    override fun check(conditionInfo: ConditionInfo): ConditionResult {
 
         val matchResult = when (conditionInfo.conditionType) {
             ConditionType.PIXEL -> {
@@ -44,13 +45,9 @@ class PixelCondition : Condition {
         }
 
         val passed = matchResult?.matchScore!! >= conditionInfo.similarity
-        val conditionResult = if (passed) ConditionResult.PASS else {
-            if (conditionInfo.isCore)
-                ConditionResult.SKIPPABLE
-            ConditionResult.FAIL
-        }
+        val resultStatus = determineResultStatus(passed, conditionInfo)
 
-        return Condition.Result(conditionResult, matchResult.matchScore, matchResult.rect)
+        return ConditionResult(resultStatus, "${resultStatus}: ${matchResult.matchScore} / ${conditionInfo.similarity}", matchResult.matchScore, matchResult.rect)
     }
 
     private data class MatchResult(val matchScore : Double, val rect : Rectangle)
@@ -82,7 +79,9 @@ class PixelCondition : Condition {
     private fun checkMatchInEntireScreen(sourceImage : BufferedImage) : MatchResult {
         val screenSize = Toolkit.getDefaultToolkit().screenSize
         val rect = Rectangle(0, 0, screenSize.width - 1, screenSize.height - 1)
-        return checkMatchInRect(rect, sourceImage)
+        val targetImage = captureCurrentScreen(robot, rect)
+        val result = templateMatching(sourceImage, targetImage, rect,false)
+        return result
     }
 
     private fun checkMatchInRect(rect : Rectangle, sourceImage : BufferedImage) : MatchResult {

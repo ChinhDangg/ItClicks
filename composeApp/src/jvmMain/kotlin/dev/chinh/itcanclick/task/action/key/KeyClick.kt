@@ -1,6 +1,7 @@
 package dev.chinh.itcanclick.task.action.key
 
-import dev.chinh.itcanclick.task.action.ActionInfo
+import dev.chinh.itcanclick.task.Result
+import dev.chinh.itcanclick.task.ResultStatus
 import java.awt.Robot
 
 class KeyClick : KeyAction {
@@ -11,11 +12,9 @@ class KeyClick : KeyAction {
         this.robot = robot
     }
 
-    override fun perform(actionInfo: ActionInfo) {
-        if (actionInfo !is KeyInfo) {
-            return
-        }
+    override fun perform(actionInfo: KeyInfo) : Result {
         click(actionInfo)
+        return Result(ResultStatus.PASS, "Key Clicked: " + actionInfo.keyCode)
     }
 
     private fun click(keyInfo: KeyInfo) {

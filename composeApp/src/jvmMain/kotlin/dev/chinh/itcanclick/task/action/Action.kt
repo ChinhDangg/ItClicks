@@ -1,6 +1,13 @@
 package dev.chinh.itcanclick.task.action
 
-interface Action {
+import dev.chinh.itcanclick.task.Result
+import dev.chinh.itcanclick.task.Task
 
-    fun perform(actionInfo: ActionInfo)
+interface Action<A : ActionInfo<A>> : Task<A> {
+
+    override fun execute(taskInfo: A) : Result {
+        return perform(taskInfo)
+    }
+
+    fun perform(actionInfo: A) : Result
 }

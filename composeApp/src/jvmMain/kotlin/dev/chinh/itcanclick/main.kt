@@ -5,10 +5,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import dev.chinh.itcanclick.task.condition.TextCondition
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.context.ConfigurableApplicationContext
-import kotlin.jvm.java
+import java.awt.Robot
+import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
+
 
 @SpringBootApplication
 class ItCanClickApplication

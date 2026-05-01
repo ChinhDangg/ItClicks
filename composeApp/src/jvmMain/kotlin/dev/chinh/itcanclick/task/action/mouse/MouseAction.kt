@@ -1,10 +1,9 @@
 package dev.chinh.itcanclick.task.action.mouse
 
 import dev.chinh.itcanclick.task.action.Action
-import dev.chinh.itcanclick.task.action.mouse.MouseInfo
 import java.awt.Robot
 
-interface MouseAction : Action {
+interface MouseAction : Action<MouseInfo> {
 
     data class Coord(val x: Int, val y: Int)
 

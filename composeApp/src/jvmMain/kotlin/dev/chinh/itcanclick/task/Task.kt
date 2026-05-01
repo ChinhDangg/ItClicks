@@ -1,4 +1,9 @@
-package dev.chinh.itcanclick.task;
+package dev.chinh.itcanclick.task
 
-public interface Task {
+interface Task<T : TaskInfo<T>> {
+
+    fun execute(taskInfo: T) : Result
+
+    val taskClass: Class<out Task<*>>
+        get() = this::class.java
 }

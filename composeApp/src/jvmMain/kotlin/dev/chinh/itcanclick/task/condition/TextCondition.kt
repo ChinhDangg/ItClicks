@@ -1,5 +1,6 @@
 package dev.chinh.itcanclick.task.condition
 
+import dev.chinh.itcanclick.task.ResultStatus
 import org.bytedeco.javacpp.BytePointer
 import org.bytedeco.leptonica.global.leptonica.pixDestroy
 import org.bytedeco.leptonica.global.leptonica.pixReadMem
@@ -20,20 +21,16 @@ class TextCondition : Condition, AutoCloseable {
         this.robot = robot
     }
 
-    override fun check(conditionInfo: ConditionInfo): Condition.Result {
+    override fun check(conditionInfo: ConditionInfo): ConditionResult {
         if (conditionInfo.conditionType != ConditionType.TEXT) {
             throw IllegalArgumentException("Condition type must be TEXT")
         }
 
         val similarity = checkInRect(conditionInfo.rect, conditionInfo.originalImage)
         val passed = similarity >= conditionInfo.similarity
-        val conditionResult = if (passed) ConditionResult.PASS else {
-            if (conditionInfo.isCore)
-                ConditionResult.SKIPPABLE
-            ConditionResult.FAIL
-        }
+        val resultStatus = determineResultStatus(passed, conditionInfo)
 
-        return Condition.Result(conditionResult, similarity, conditionInfo.rect)
+        return ConditionResult(resultStatus, "${resultStatus}: ${similarity} / ${conditionInfo.similarity}", similarity, conditionInfo.rect)
     }
 
     fun checkInRect(rect: Rectangle, sourceImage: BufferedImage) : Double {
@@ -96,29 +93,29 @@ class TextCondition : Condition, AutoCloseable {
     }
 
     fun extractText(image: BufferedImage): String {
-        // 1. Encode BufferedImage → PNG bytes in memory
+        // Encode BufferedImage → PNG bytes in memory
         val baos = ByteArrayOutputStream()
         ImageIO.write(image, "png", baos)
         val imageBytes = baos.toByteArray()
 
-        // 2. Decode bytes → Leptonica PIX (no disk I/O)
+        // Decode bytes → Leptonica PIX (no disk I/O)
         val byteBuffer = ByteBuffer.wrap(imageBytes)
         val pix = pixReadMem(byteBuffer, imageBytes.size.toLong())
             ?: error("Leptonica could not decode the image.")
 
         return try {
-            // 3. Hand PIX directly to Tesseract
+            // Hand PIX directly to Tesseract
             api.SetImage(pix)
             api.SetSourceResolution(300) // hint: 300 DPI improves accuracy
 
-            // 4. Run recognition and read result
+            // Run recognition and read result
             val outText: BytePointer = api.GetUTF8Text() ?: return ""
 
             outText.getString(Charsets.UTF_8).trim().also {
                 outText.deallocate()
             }
         } finally {
-            // 5. Free the PIX — Tesseract made its own copy so safe to free now
+            // Free the PIX — Tesseract made its own copy so safe to free now
             pixDestroy(pix)
             api.Clear() // reset internal state for next call, keeps Init() alive
         }

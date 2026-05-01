@@ -1,5 +1,7 @@
 package dev.chinh.itcanclick.task.action.key
 
+import dev.chinh.itcanclick.task.Result
+import dev.chinh.itcanclick.task.ResultStatus
 import dev.chinh.itcanclick.task.action.ActionInfo
 import java.awt.Robot
 
@@ -11,11 +13,9 @@ class KeyRelease : KeyAction {
         this.robot = robot
     }
 
-    override fun perform(actionInfo: ActionInfo) {
-        if (actionInfo !is KeyInfo) {
-            return
-        }
+    override fun perform(actionInfo: KeyInfo): Result {
         release(actionInfo)
+        return Result(ResultStatus.PASS, "Key Released: " + actionInfo.keyCode)
     }
 
     private fun release(keyInfo: KeyInfo) {

@@ -1,7 +1,8 @@
 package dev.chinh.itcanclick.task.action.mouse
 
 import dev.chinh.itcanclick.log.log
-import dev.chinh.itcanclick.task.action.ActionInfo
+import dev.chinh.itcanclick.task.Result
+import dev.chinh.itcanclick.task.ResultStatus
 import java.awt.Robot
 import java.awt.event.InputEvent
 
@@ -13,11 +14,9 @@ class MouseRelease : MouseAction {
         this.robot = robot
     }
 
-    override fun perform(actionInfo: ActionInfo) {
-        if (actionInfo !is MouseInfo) {
-            return
-        }
+    override fun perform(actionInfo: MouseInfo): Result {
         release(actionInfo)
+        return Result(ResultStatus.PASS, "Mouse Released")
     }
 
     private fun release(mouseInfo: MouseInfo) {
