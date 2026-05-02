@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage
 
 interface Condition : Task<ConditionInfo> {
 
-    override fun execute(taskInfo: ConditionInfo): Result {
+    override suspend fun execute(taskInfo: ConditionInfo): Result {
         return check(taskInfo)
     }
 

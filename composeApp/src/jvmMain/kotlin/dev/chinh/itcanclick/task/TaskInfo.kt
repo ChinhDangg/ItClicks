@@ -11,7 +11,7 @@ abstract class TaskInfo<T : TaskInfo<T>>(
 
     abstract fun getSelf(): T
 
-    fun selfExecute() : Result {
+    suspend fun selfExecute() : Result {
         return executor.execute(getSelf())
     }
 }

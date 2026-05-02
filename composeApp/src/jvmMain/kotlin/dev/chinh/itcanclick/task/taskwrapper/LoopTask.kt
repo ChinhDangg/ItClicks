@@ -1,22 +1,20 @@
 package dev.chinh.itcanclick.task.taskwrapper
 
 import dev.chinh.itcanclick.task.Result
-import dev.chinh.itcanclick.task.Task
-import dev.chinh.itcanclick.task.TaskInfo
+import dev.chinh.itcanclick.task.ResultStatus
 
-class LoopTask(
-    override var tasksToRun: List<TaskInfo<*>> = emptyList(),
-) : TaskWrapper<LoopTaskInfo>() {
+class LoopTask : TaskWrapper<LoopTaskInfo>() {
 
-    override fun perform(taskInfo: LoopTaskInfo): Result {
-        TODO("Not yet implemented")
+    override suspend fun perform(taskInfo: LoopTaskInfo): Result {
+        return runLoop(taskInfo)
     }
 
-    fun runLoop(taskInfo: LoopTaskInfo) : Result {
-        for (i in 0 until taskInfo.numLoops) {
-
+    suspend fun runLoop(taskInfo: LoopTaskInfo) : Result {
+        (0 until taskInfo.numLoops).forEach { _ ->
+            val result = runTasks()
+            if (result.result == ResultStatus.FAIL)
+                return result
         }
-
-        TODO("Not yet implemented")
+        return Result(ResultStatus.PASS, "All tasks passed in loop")
     }
 }

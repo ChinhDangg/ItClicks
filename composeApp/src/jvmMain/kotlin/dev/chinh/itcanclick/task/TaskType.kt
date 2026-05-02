@@ -9,6 +9,8 @@ enum class TaskType {
     KEY_RELEASE,
     PIXEL_MATCH,
     TEXT_MATCH,
+    DELAY,
     LOOPED_TASK,
-    SCHEDULED_TASK
+    SCHEDULED_TASK,
+    WRAPPER
 }

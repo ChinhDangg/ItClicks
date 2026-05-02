@@ -7,19 +7,24 @@ import dev.chinh.itcanclick.task.TaskInfo
 
 abstract class TaskWrapper<W : TaskWrapperInfo<W>> : Task<W> {
 
-    abstract var tasksToRun: List<TaskInfo<*>>
-
-    override fun execute(taskInfo: W): Result {
+    override suspend fun execute(taskInfo: W): Result {
         return perform(taskInfo)
     }
 
-    abstract fun perform(taskInfo: W) : Result
+    abstract suspend fun perform(taskInfo: W) : Result
 
-    fun runTasks() : Result {
-        for (taskInfo in tasksToRun) {
+    suspend fun runTasks(taskInfoList: List<TaskInfo<W>>) : Result {
+        for (i in taskInfoList.indices) {
+            val taskInfo = taskInfoList[i]
             val result = taskInfo.selfExecute()
-            if (result.result != ResultStatus.PASS) {
-                return result
+            when (result.result) {
+                ResultStatus.FAIL -> return result
+                ResultStatus.SKIPPABLE -> return result
+                ResultStatus.PASS -> continue
+                ResultStatus.PASS_RESULT -> {
+                    val nextTask = taskInfoList.getOrNull(i + 1)
+                    nextTask?.passResult(result)
+                }
             }
         }
         return Result(ResultStatus.PASS, "All tasks passed")

@@ -1,13 +1,14 @@
 package dev.chinh.itcanclick.task.taskwrapper
 
 import dev.chinh.itcanclick.task.Result
-import dev.chinh.itcanclick.task.TaskInfo
 
-class ScheduledTask(
-    override var tasksToRun: List<TaskInfo<*>> = emptyList(),
-) : TaskWrapper<ScheduledTaskInfo>() {
+class ScheduledTask : TaskWrapper<ScheduledTaskInfo>() {
 
-    override fun perform(taskInfo: ScheduledTaskInfo): Result {
-        TODO("Not yet implemented")
+    override suspend fun perform(taskInfo: ScheduledTaskInfo): Result {
+        return runScheduled()
+    }
+
+    fun runScheduled(): Result {
+        TODO()
     }
 }
