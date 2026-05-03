@@ -4,11 +4,11 @@ import dev.chinh.itcanclick.task.Result
 
 class NormalWrapper : TaskWrapper<NormalWrapperInfo>() {
 
-    override suspend fun perform(taskInfo: NormalWrapperInfo): Result {
+    override suspend fun execute(taskInfo: NormalWrapperInfo): Result {
         return runNormal(taskInfo)
     }
 
     suspend fun runNormal(taskInfo: NormalWrapperInfo): Result {
-        return runTasks(taskInfo.tasksToRun)
+        return runTasks(taskInfo)
     }
 }

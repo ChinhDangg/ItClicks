@@ -4,7 +4,7 @@ import dev.chinh.itcanclick.task.Result
 
 class ScheduledTask : TaskWrapper<ScheduledTaskInfo>() {
 
-    override suspend fun perform(taskInfo: ScheduledTaskInfo): Result {
+    override suspend fun execute(taskInfo: ScheduledTaskInfo): Result {
         return runScheduled()
     }
 

@@ -7,26 +7,27 @@ import dev.chinh.itcanclick.task.TaskInfo
 
 abstract class TaskWrapper<W : TaskWrapperInfo<W>> : Task<W> {
 
-    override suspend fun execute(taskInfo: W): Result {
-        return perform(taskInfo)
-    }
-
-    abstract suspend fun perform(taskInfo: W) : Result
-
-    suspend fun runTasks(taskInfoList: List<TaskInfo<W>>) : Result {
-        for (i in taskInfoList.indices) {
-            val taskInfo = taskInfoList[i]
+    suspend fun runTasks(taskWrapperInfo: TaskWrapperInfo<W>) : Result {
+        var wrapperResult = Result(ResultStatus.PASS, "All tasks passed")
+        for (taskInfo in taskWrapperInfo.tasksToRun) {
+            taskWrapperInfo.result?.let {
+                taskInfo.passResult(it) // passing result from wrapper parent to inner
+            }
             val result = taskInfo.selfExecute()
             when (result.result) {
                 ResultStatus.FAIL -> return result
-                ResultStatus.SKIPPABLE -> return result
+                ResultStatus.SKIPPABLE -> {
+                    if (wrapperResult.result == ResultStatus.PASS)
+                        return result
+                    return wrapperResult
+                }
                 ResultStatus.PASS -> continue
                 ResultStatus.PASS_RESULT -> {
-                    val nextTask = taskInfoList.getOrNull(i + 1)
-                    nextTask?.passResult(result)
+                    wrapperResult = result // parent wrapper will pass result to next task if not failed
+                    taskWrapperInfo.result = result // passing result from inner to wrapper parent
                 }
             }
         }
-        return Result(ResultStatus.PASS, "All tasks passed")
+        return wrapperResult
     }
 }
