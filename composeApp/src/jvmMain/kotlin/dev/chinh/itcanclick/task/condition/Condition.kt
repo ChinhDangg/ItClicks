@@ -21,6 +21,8 @@ interface Condition : Task<ConditionInfo> {
 
     fun determineResultStatus(passed : Boolean, conditionInfo : ConditionInfo): ResultStatus {
         val resultStatus = if (passed) {
+            if (conditionInfo.isCore && conditionInfo.passingResult)
+                ResultStatus.SKIP_PASS
             if (conditionInfo.isCore)
                 ResultStatus.SKIPPABLE
             if (conditionInfo.passingResult)

@@ -16,6 +16,7 @@ abstract class TaskWrapper<W : TaskWrapperInfo<W>> : Task<W> {
             val result = taskInfo.selfExecute()
             when (result.result) {
                 ResultStatus.FAIL -> return result
+                ResultStatus.SKIP_PASS -> return result
                 ResultStatus.SKIPPABLE -> {
                     if (wrapperResult.result == ResultStatus.PASS)
                         return result
