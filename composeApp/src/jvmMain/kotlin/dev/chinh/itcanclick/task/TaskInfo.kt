@@ -1,7 +1,6 @@
 package dev.chinh.itcanclick.task
 
 abstract class TaskInfo<T : TaskInfo<T>>(
-    val taskType: TaskType,
     val executor: Task<T>,
     var result: Result? = null
 ) {

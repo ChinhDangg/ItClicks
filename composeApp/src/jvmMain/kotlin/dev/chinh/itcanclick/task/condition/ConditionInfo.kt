@@ -1,7 +1,6 @@
 package dev.chinh.itcanclick.task.condition
 
 import dev.chinh.itcanclick.task.TaskInfo
-import dev.chinh.itcanclick.task.TaskType
 
 data class ConditionInfo(
     var rect: java.awt.Rectangle,
@@ -11,9 +10,8 @@ data class ConditionInfo(
     var isCore: Boolean = false,
     var globalSearch: Boolean = false,
     var passingResult: Boolean = false,
-    val type: TaskType,
     val taskExecutor: Condition
-) : TaskInfo<ConditionInfo>(type, taskExecutor) {
+) : TaskInfo<ConditionInfo>(taskExecutor) {
 
     override fun getSelf(): ConditionInfo = this
 }

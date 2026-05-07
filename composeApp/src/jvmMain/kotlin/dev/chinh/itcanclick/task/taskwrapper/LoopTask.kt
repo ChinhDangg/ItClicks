@@ -10,12 +10,13 @@ class LoopTask : TaskWrapper<LoopTaskInfo>() {
     }
 
     suspend fun runLoop(taskInfo: LoopTaskInfo) : Result {
+        var result = Result(ResultStatus.PASS, "All tasks: ${taskInfo.tasksToRun.size} passed in loop")
         (0 until taskInfo.numLoops).forEach { _ ->
-            val result = runTasks(taskInfo)
+            result = runTasks(taskInfo)
             if (result.result == ResultStatus.FAIL)
                 return result
         }
-        return Result(ResultStatus.PASS, "All tasks passed in loop")
+        return result
     }
 
 }
