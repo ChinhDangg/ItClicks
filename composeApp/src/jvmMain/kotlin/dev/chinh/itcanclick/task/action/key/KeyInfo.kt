@@ -4,7 +4,7 @@ import dev.chinh.itcanclick.task.action.ActionInfo
 
 data class KeyInfo(
     val keyCode: Int,
-    val delay: Int = 0,
+    val delay: Int,
     val taskExecutor: KeyAction
 ) : ActionInfo<KeyInfo>(taskExecutor) {
 
