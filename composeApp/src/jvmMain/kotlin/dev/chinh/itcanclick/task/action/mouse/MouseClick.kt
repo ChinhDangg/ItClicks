@@ -6,7 +6,7 @@ import dev.chinh.itcanclick.task.ResultStatus
 import java.awt.Robot
 import java.awt.event.InputEvent
 
-class MouseClick : MouseAction {
+class MouseClick : MouseAction<MouseClickInfo> {
 
     private val robot : Robot
 
@@ -14,12 +14,12 @@ class MouseClick : MouseAction {
         this.robot = robot
     }
 
-    override fun perform(actionInfo: MouseInfo): Result {
+    override fun perform(actionInfo: MouseClickInfo): Result {
         val coord = click(actionInfo)
         return Result(ResultStatus.PASS, "Mouse Clicked: $coord")
     }
 
-    private fun click(mouseInfo: MouseInfo): Pair<Int, Int> {
+    private fun click(mouseInfo: MouseClickInfo): Pair<Int, Int> {
         val (x, y) = moveMouse(robot, mouseInfo)
         repeat(mouseInfo.numClicks) {
             robot.delay(mouseInfo.delay)

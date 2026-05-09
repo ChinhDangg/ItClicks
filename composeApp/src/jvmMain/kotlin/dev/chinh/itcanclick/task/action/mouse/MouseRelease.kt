@@ -6,7 +6,7 @@ import dev.chinh.itcanclick.task.ResultStatus
 import java.awt.Robot
 import java.awt.event.InputEvent
 
-class MouseRelease : MouseAction {
+class MouseRelease : MouseAction<MouseBaseInfo> {
 
     private val robot : Robot
 
@@ -14,12 +14,12 @@ class MouseRelease : MouseAction {
         this.robot = robot
     }
 
-    override fun perform(actionInfo: MouseInfo): Result {
+    override fun perform(actionInfo: MouseBaseInfo): Result {
         release(actionInfo)
         return Result(ResultStatus.PASS, "Mouse Released")
     }
 
-    private fun release(mouseInfo: MouseInfo) {
+    private fun release(mouseInfo: MouseBaseInfo) {
         robot.delay(mouseInfo.delay)
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
         log("Mouse Released")
