@@ -4,12 +4,11 @@ import dev.chinh.itcanclick.task.TaskInfo
 
 data class ConditionInfo(
     var rect: java.awt.Rectangle,
-    var originalImage: java.awt.image.BufferedImage,
-    var conditionType: ConditionType,
-    var similarity: Float = 0.85f,
-    var isCore: Boolean = false,
-    var globalSearch: Boolean = false,
-    var passingResult: Boolean = false,
+    val originalImage: java.awt.image.BufferedImage,
+    val similarity: Float,
+    val isCore: Boolean,
+    val globalSearch: Boolean,
+    val passingResult: Boolean,
     val taskExecutor: Condition
 ) : TaskInfo<ConditionInfo>(taskExecutor) {
 
