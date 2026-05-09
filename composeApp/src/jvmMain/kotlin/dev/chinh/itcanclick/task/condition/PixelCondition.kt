@@ -1,7 +1,5 @@
 package dev.chinh.itcanclick.task.condition
 
-import dev.chinh.itcanclick.log.log
-import dev.chinh.itcanclick.task.ResultStatus
 import org.bytedeco.javacpp.DoublePointer
 import org.bytedeco.javacpp.Loader
 import org.bytedeco.opencv.global.opencv_core
@@ -9,88 +7,15 @@ import org.bytedeco.opencv.global.opencv_imgproc
 import org.bytedeco.opencv.opencv_core.Mat
 import org.bytedeco.opencv.opencv_core.Point
 import java.awt.Rectangle
-import java.awt.Robot
-import java.awt.Toolkit
 import java.awt.image.BufferedImage
 import java.awt.image.DataBufferByte
 
 
-class PixelCondition : Condition {
+interface PixelCondition : Condition {
 
-    private val robot : Robot
+    data class MatchResult(val matchScore : Double, val rect : Rectangle)
 
-    constructor(robot: Robot) {
-        this.robot = robot
-    }
-
-
-    override fun check(conditionInfo: ConditionInfo): ConditionResult {
-
-        val matchResult = when (conditionInfo.conditionType) {
-            ConditionType.PIXEL -> {
-                if (conditionInfo.globalSearch)
-                    checkExactInEntireScreen(conditionInfo.originalImage)
-                checkExactInRect(conditionInfo.rect, conditionInfo.originalImage)
-            }
-
-            ConditionType.SIMILAR_SHAPE -> {
-                if (conditionInfo.globalSearch)
-                    checkMatchInEntireScreen(conditionInfo.originalImage)
-                checkMatchInRect(conditionInfo.rect, conditionInfo.originalImage)
-            }
-            else -> {
-                log("Unknown condition type: ${conditionInfo.conditionType}")
-                null
-            }
-        }
-
-        val passed = matchResult?.matchScore!! >= conditionInfo.similarity
-        val resultStatus = determineResultStatus(passed, conditionInfo)
-
-        return ConditionResult(resultStatus, "${resultStatus}: ${matchResult.matchScore} / ${conditionInfo.similarity}", matchResult.matchScore, matchResult.rect)
-    }
-
-    private data class MatchResult(val matchScore : Double, val rect : Rectangle)
-
-    private fun checkExactInRect(rect : Rectangle, sourceImage : BufferedImage) : MatchResult {
-        val targetImage = captureCurrentScreen(robot, rect)
-
-        var passed = true
-        val height = sourceImage.height; val width = sourceImage.width
-        for (i in 0 until height) {
-            for (j in 0 until width) {
-                if (sourceImage.getRGB(j, i) != targetImage.getRGB(j, i)) {
-                    passed = false
-                    break
-                }
-            }
-            if (!passed) break
-        }
-
-        return MatchResult(if (passed) 1.0 else 0.0, rect)
-    }
-
-    private fun checkExactInEntireScreen(sourceImage : BufferedImage) : MatchResult {
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
-        val rect = Rectangle(0, 0, screenSize.width - 1, screenSize.height - 1)
-        return checkExactInRect(rect, sourceImage)
-    }
-
-    private fun checkMatchInEntireScreen(sourceImage : BufferedImage) : MatchResult {
-        val screenSize = Toolkit.getDefaultToolkit().screenSize
-        val rect = Rectangle(0, 0, screenSize.width - 1, screenSize.height - 1)
-        val targetImage = captureCurrentScreen(robot, rect)
-        val result = templateMatching(sourceImage, targetImage, rect,false)
-        return result
-    }
-
-    private fun checkMatchInRect(rect : Rectangle, sourceImage : BufferedImage) : MatchResult {
-        val targetImage = captureCurrentScreen(robot, rect)
-        val result = templateMatching(sourceImage, targetImage, rect,true)
-        return result
-    }
-
-    private fun templateMatching(sourceImage : BufferedImage, targetImage : BufferedImage,
+    fun templateMatching(sourceImage : BufferedImage, targetImage : BufferedImage,
                                  rect : Rectangle, useCenter : Boolean) : MatchResult {
         // Load OpenCV native libraries
         Loader.load(opencv_core::class.java)

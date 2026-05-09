@@ -22,10 +22,6 @@ class TextCondition : Condition, AutoCloseable {
     }
 
     override fun check(conditionInfo: ConditionInfo): ConditionResult {
-        if (conditionInfo.conditionType != ConditionType.TEXT) {
-            throw IllegalArgumentException("Condition type must be TEXT")
-        }
-
         val similarity = checkInRect(conditionInfo.rect, conditionInfo.originalImage)
         val passed = similarity >= conditionInfo.similarity
         val resultStatus = determineResultStatus(passed, conditionInfo)
@@ -33,7 +29,7 @@ class TextCondition : Condition, AutoCloseable {
         return ConditionResult(resultStatus, "${resultStatus}: ${similarity} / ${conditionInfo.similarity}", similarity, conditionInfo.rect)
     }
 
-    fun checkInRect(rect: Rectangle, sourceImage: BufferedImage) : Double {
+    private fun checkInRect(rect: Rectangle, sourceImage: BufferedImage) : Double {
         val targetImage = captureCurrentScreen(robot, rect)
 
         val originalText = extractText(sourceImage)
@@ -41,7 +37,7 @@ class TextCondition : Condition, AutoCloseable {
         return getSimilarity(originalText, targetText)
     }
 
-    fun getSimilarity(s1: String, s2: String): Double {
+    private fun getSimilarity(s1: String, s2: String): Double {
         // Normalize both strings
         val norm1 = s1.normalizeSpaces()
         val norm2 = s2.normalizeSpaces()
@@ -58,7 +54,7 @@ class TextCondition : Condition, AutoCloseable {
         return 1.0 - (distance.toDouble() / maxLength)
     }
 
-    fun String.normalizeSpaces(): String {
+    private fun String.normalizeSpaces(): String {
         return this.trim().replace("\\s+".toRegex(), " ")
     }
 
