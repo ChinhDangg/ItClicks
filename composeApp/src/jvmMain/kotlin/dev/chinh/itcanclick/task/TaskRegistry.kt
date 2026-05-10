@@ -10,9 +10,9 @@ import dev.chinh.itcanclick.task.condition.PixelExactCondition
 import dev.chinh.itcanclick.task.condition.PixelSimilarCondition
 import dev.chinh.itcanclick.task.condition.TextCondition
 import dev.chinh.itcanclick.task.delay.Delay
-import dev.chinh.itcanclick.task.taskwrapper.LoopTask
-import dev.chinh.itcanclick.task.taskwrapper.NormalWrapper
-import dev.chinh.itcanclick.task.taskwrapper.ScheduledTask
+import dev.chinh.itcanclick.task.wrapper.LoopTask
+import dev.chinh.itcanclick.task.wrapper.NormalWrapper
+import dev.chinh.itcanclick.task.wrapper.ScheduledTask
 import dev.chinh.itcanclick.task.type.*
 
 object TaskRegistry {

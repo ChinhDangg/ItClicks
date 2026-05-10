@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.task.taskwrapper
+package dev.chinh.itcanclick.task.wrapper
 
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.TaskInfo
