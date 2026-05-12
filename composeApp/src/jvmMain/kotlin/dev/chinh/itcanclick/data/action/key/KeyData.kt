@@ -1,7 +1,7 @@
-package dev.chinh.itcanclick.data
+package dev.chinh.itcanclick.data.action.key
 
+import dev.chinh.itcanclick.data.action.ActionData
 import dev.chinh.itcanclick.task.TaskRegistry
-import dev.chinh.itcanclick.task.action.key.KeyAction
 import dev.chinh.itcanclick.task.action.key.KeyInfo
 import dev.chinh.itcanclick.task.type.KeyType
 
@@ -11,14 +11,10 @@ data class KeyData(
     override var taskType: KeyType
 ) : ActionData<KeyInfo> {
 
-    override fun getTaskInfo(): KeyInfo {
-        return getMinimalTaskInfo()
-    }
-
     override fun getMinimalTaskInfo(): KeyInfo {
         return KeyInfo(
             keyCode, delay,
-            TaskRegistry.getTask(taskType) as KeyAction,
+            TaskRegistry.getTask(taskType),
             null
         )
     }

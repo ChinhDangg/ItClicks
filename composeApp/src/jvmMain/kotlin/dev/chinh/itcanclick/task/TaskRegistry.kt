@@ -33,8 +33,8 @@ object TaskRegistry {
     private val scheduledWrapper = ScheduledTask()
     private val wrapper = NormalWrapper()
 
-
-    fun getTask(taskType: TaskType) : Task<*> {
+    @Suppress("UNCHECKED_CAST")
+    fun <I> getTask(taskType: TaskType) : I {
         return when (taskType) {
             MouseType.MOUSE_CLICK -> mouseClick
             MouseType.MOUSE_PRESS -> mousePress
@@ -49,6 +49,6 @@ object TaskRegistry {
             WrapperType.LOOPED_TASK -> loopWrapper
             WrapperType.SCHEDULED_TASK -> scheduledWrapper
             WrapperType.WRAPPER -> wrapper
-        }
+        } as I
     }
 }

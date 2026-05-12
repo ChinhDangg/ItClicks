@@ -1,7 +1,6 @@
-package dev.chinh.itcanclick.data.mouse
+package dev.chinh.itcanclick.data.action.mouse
 
 import dev.chinh.itcanclick.task.TaskRegistry
-import dev.chinh.itcanclick.task.action.mouse.MouseClick
 import dev.chinh.itcanclick.task.action.mouse.MouseClickInfo
 import dev.chinh.itcanclick.task.type.MouseType
 import java.awt.Rectangle
@@ -14,14 +13,10 @@ data class MouseClickData(
     override var taskType: MouseType
 ) : MouseData<MouseClickInfo> {
 
-    override fun getTaskInfo(): MouseClickInfo {
-        return getMinimalTaskInfo()
-    }
-
     override fun getMinimalTaskInfo(): MouseClickInfo {
         return MouseClickInfo(
             numClicks, delay, rect, isExact,
-            TaskRegistry.getTask(taskType) as MouseClick,
+            TaskRegistry.getTask(taskType),
             null
         )
     }

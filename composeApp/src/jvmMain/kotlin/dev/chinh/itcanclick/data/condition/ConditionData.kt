@@ -1,9 +1,10 @@
-package dev.chinh.itcanclick.data
+package dev.chinh.itcanclick.data.condition
 
+import dev.chinh.itcanclick.data.TaskData
 import dev.chinh.itcanclick.task.TaskRegistry
-import dev.chinh.itcanclick.task.condition.Condition
 import dev.chinh.itcanclick.task.condition.ConditionInfo
 import dev.chinh.itcanclick.task.type.ConditionType
+import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
@@ -11,7 +12,7 @@ import javax.imageio.ImageIO
 
 data class ConditionData(
     var originalImagePath: String,
-    var rect: java.awt.Rectangle,
+    var rect: Rectangle,
     var similarity: Float = 0.85f,
     var isCore: Boolean = false,
     var globalSearch: Boolean = false,
@@ -29,7 +30,7 @@ data class ConditionData(
         return ConditionInfo(
             null,
             rect, similarity, isCore, globalSearch, passingResult,
-            TaskRegistry.getTask(taskType) as Condition,
+            TaskRegistry.getTask(taskType),
             null
         )
     }
