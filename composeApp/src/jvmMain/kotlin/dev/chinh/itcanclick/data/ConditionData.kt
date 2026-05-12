@@ -1,6 +1,5 @@
 package dev.chinh.itcanclick.data
 
-import dev.chinh.itcanclick.task.TaskInfo
 import dev.chinh.itcanclick.task.TaskRegistry
 import dev.chinh.itcanclick.task.condition.Condition
 import dev.chinh.itcanclick.task.condition.ConditionInfo
@@ -20,16 +19,22 @@ data class ConditionData(
     override var taskType: ConditionType
 ) : TaskData<ConditionInfo> {
 
-    override fun getTaskInfo(): TaskInfo<ConditionInfo> {
+    override fun getTaskInfo(): ConditionInfo {
+        val info = getMinimalTaskInfo()
+        info.originalImage = loadImage(originalImagePath)
+        return info
+    }
+
+    override fun getMinimalTaskInfo(): ConditionInfo {
         return ConditionInfo(
-            loadImage(originalImagePath),
+            null,
             rect, similarity, isCore, globalSearch, passingResult,
             TaskRegistry.getTask(taskType) as Condition,
             null
         )
     }
 
-    fun loadImage(pathname: String) : BufferedImage {
+    private fun loadImage(pathname: String) : BufferedImage {
         try {
             val filePath = File(pathname)
             ImageIO.read(filePath)

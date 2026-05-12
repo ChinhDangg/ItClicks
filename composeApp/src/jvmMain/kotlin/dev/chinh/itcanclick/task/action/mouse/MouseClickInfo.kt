@@ -8,7 +8,7 @@ data class MouseClickInfo(
     val delay: Int,
     override var rect: Rectangle,
     override val isExact: Boolean = false,
-    override val executor: MouseAction<MouseClickInfo>,
+    override val executor: MouseClick,
     override var result: Result?
 ) : MouseInfo<MouseClickInfo> {
 

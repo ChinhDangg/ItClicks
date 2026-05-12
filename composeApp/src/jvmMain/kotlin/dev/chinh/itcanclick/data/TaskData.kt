@@ -8,4 +8,6 @@ interface TaskData<T : TaskInfo<T>>
     val taskType: TaskType
 
     fun getTaskInfo(): TaskInfo<T>
+
+    fun getMinimalTaskInfo(): TaskInfo<T>
 }

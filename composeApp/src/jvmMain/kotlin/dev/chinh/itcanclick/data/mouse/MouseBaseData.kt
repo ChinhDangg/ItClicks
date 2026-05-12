@@ -14,6 +14,10 @@ data class MouseBaseData(
 ) : MouseData<MouseBaseInfo> {
 
     override fun getTaskInfo(): MouseBaseInfo {
+        return getMinimalTaskInfo()
+    }
+
+    override fun getMinimalTaskInfo(): MouseBaseInfo {
         return MouseBaseInfo(
             delay, rect, isExact,
             TaskRegistry.getTask(taskType) as MouseAction<MouseBaseInfo>,
