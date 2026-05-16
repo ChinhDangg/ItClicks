@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 
-fun saveImageSafely(image: BufferedImage, filename: String) {
+fun saveImage(image: BufferedImage, filename: String): String {
     val os = System.getProperty("os.name").lowercase()
     val userHome = System.getProperty("user.home")
     val appName = "ItCanClick"
@@ -16,7 +16,8 @@ fun saveImageSafely(image: BufferedImage, filename: String) {
         else -> File(userHome, ".local/share/$appName") // Linux standard
     }
 
-    val imageFolder = File(baseDir, "TaskImages")
+    val projectFolder = "ProjectName/Images"
+    val imageFolder = File(baseDir, projectFolder)
 
     if (!imageFolder.exists()) {
         imageFolder.mkdirs()
@@ -26,5 +27,6 @@ fun saveImageSafely(image: BufferedImage, filename: String) {
     ImageIO.write(image, "png", outputFile)
 
     println("Image saved safely to: ${outputFile.absolutePath}")
+    return "$projectFolder/$filename"
 }
 

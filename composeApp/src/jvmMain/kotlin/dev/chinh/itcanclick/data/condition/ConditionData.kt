@@ -1,7 +1,6 @@
 package dev.chinh.itcanclick.data.condition
 
 import dev.chinh.itcanclick.data.TaskData
-import dev.chinh.itcanclick.task.TaskRegistry
 import dev.chinh.itcanclick.task.condition.ConditionInfo
 import dev.chinh.itcanclick.task.type.ConditionType
 import java.awt.Rectangle
@@ -11,18 +10,22 @@ import java.io.IOException
 import javax.imageio.ImageIO
 
 data class ConditionData(
-    var originalImagePath: String,
+    var originalImagePath: String?,
     var rect: Rectangle,
     var similarity: Float = 0.85f,
     var isCore: Boolean = false,
     var globalSearch: Boolean = false,
     var passingResult: Boolean = false,
+    override val id: String,
+    override val name: String,
     override var taskType: ConditionType
 ) : TaskData<ConditionInfo> {
 
     override fun getTaskInfo(): ConditionInfo {
         val info = getMinimalTaskInfo()
-        info.originalImage = loadImage(originalImagePath)
+        if (originalImagePath == null)
+            return info
+        info.originalImage = loadImage(originalImagePath!!)
         return info
     }
 
@@ -30,7 +33,7 @@ data class ConditionData(
         return ConditionInfo(
             null,
             rect, similarity, isCore, globalSearch, passingResult,
-            TaskRegistry.getTask(taskType),
+            id, name, taskType,
             null
         )
     }

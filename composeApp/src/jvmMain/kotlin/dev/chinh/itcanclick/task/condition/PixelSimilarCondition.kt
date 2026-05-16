@@ -1,5 +1,6 @@
 package dev.chinh.itcanclick.task.condition
 
+import dev.chinh.itcanclick.task.ResultStatus
 import java.awt.Rectangle
 import java.awt.Robot
 import java.awt.Toolkit
@@ -14,10 +15,13 @@ class PixelSimilarCondition : PixelCondition{
     }
 
     override fun check(conditionInfo: ConditionInfo): ConditionResult {
+        if (conditionInfo.originalImage == null)
+            return ConditionResult(ResultStatus.PASS, "No image to compare", 1.0, conditionInfo.rect)
+
         val matchResult = if (conditionInfo.globalSearch)
-            checkMatchInEntireScreen(conditionInfo.originalImage)
+            checkMatchInEntireScreen(conditionInfo.originalImage!!)
         else
-            checkMatchInRect(conditionInfo.rect, conditionInfo.originalImage)
+            checkMatchInRect(conditionInfo.rect, conditionInfo.originalImage!!)
 
         val passed = matchResult.matchScore >= conditionInfo.similarity
         val resultStatus = determineResultStatus(passed, conditionInfo)

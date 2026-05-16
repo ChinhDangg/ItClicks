@@ -48,7 +48,7 @@ object TaskRegistry {
             OtherType.DELAY -> delayAction
             WrapperType.LOOPED_TASK -> loopWrapper
             WrapperType.SCHEDULED_TASK -> scheduledWrapper
-            WrapperType.WRAPPER -> wrapper
+            WrapperType.NORMAL_WRAPPER -> wrapper
         } as I
     }
 }

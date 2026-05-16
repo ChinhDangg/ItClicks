@@ -22,7 +22,10 @@ class TextCondition : Condition, AutoCloseable {
     }
 
     override fun check(conditionInfo: ConditionInfo): ConditionResult {
-        val similarity = checkInRect(conditionInfo.rect, conditionInfo.originalImage)
+        if (conditionInfo.originalImage == null)
+            return ConditionResult(ResultStatus.PASS, "No image to compare", 1.0, conditionInfo.rect)
+
+        val similarity = checkInRect(conditionInfo.rect, conditionInfo.originalImage!!)
         val passed = similarity >= conditionInfo.similarity
         val resultStatus = determineResultStatus(passed, conditionInfo)
 
