@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.task
+package dev.chinh.itcanclick.task.util
 
 import java.awt.image.BufferedImage
 import java.io.File
