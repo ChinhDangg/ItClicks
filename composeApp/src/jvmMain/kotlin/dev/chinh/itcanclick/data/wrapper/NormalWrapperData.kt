@@ -4,7 +4,9 @@ import dev.chinh.itcanclick.data.TaskData
 import dev.chinh.itcanclick.task.type.TaskType
 import dev.chinh.itcanclick.task.type.WrapperType
 import dev.chinh.itcanclick.task.wrapper.NormalWrapperInfo
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class NormalWrapperData(
     override val taskDataList: List<TaskData<*>>,
     override val id: String,

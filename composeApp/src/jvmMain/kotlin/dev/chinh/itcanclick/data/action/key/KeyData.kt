@@ -3,7 +3,9 @@ package dev.chinh.itcanclick.data.action.key
 import dev.chinh.itcanclick.data.action.ActionData
 import dev.chinh.itcanclick.task.action.key.KeyInfo
 import dev.chinh.itcanclick.task.type.KeyType
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class KeyData(
     var keyCode: Int,
     var delay: Int = 0,

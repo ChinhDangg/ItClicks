@@ -3,7 +3,7 @@ package dev.chinh.itcanclick.task.condition
 import dev.chinh.itcanclick.data.condition.ConditionData
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.TaskInfo
-import dev.chinh.itcanclick.task.saveImage
+import dev.chinh.itcanclick.task.util.saveImage
 import dev.chinh.itcanclick.task.type.ConditionType
 
 data class ConditionInfo(

@@ -4,7 +4,9 @@ import dev.chinh.itcanclick.data.TaskData
 import dev.chinh.itcanclick.task.type.TaskType
 import dev.chinh.itcanclick.task.type.WrapperType
 import dev.chinh.itcanclick.task.wrapper.LoopTaskInfo
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LoopTaskData(
     val numLoops: Int,
     override val taskDataList: List<TaskData<*>>,

@@ -4,7 +4,9 @@ import dev.chinh.itcanclick.data.TaskData
 import dev.chinh.itcanclick.task.delay.DelayInfo
 import dev.chinh.itcanclick.task.type.OtherType
 import dev.chinh.itcanclick.task.type.TaskType
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DelayData(
     val delay: Long,
 ) : TaskData<DelayInfo> {

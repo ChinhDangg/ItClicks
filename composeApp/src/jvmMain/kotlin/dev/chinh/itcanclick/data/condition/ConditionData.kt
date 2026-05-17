@@ -3,14 +3,18 @@ package dev.chinh.itcanclick.data.condition
 import dev.chinh.itcanclick.data.TaskData
 import dev.chinh.itcanclick.task.condition.ConditionInfo
 import dev.chinh.itcanclick.task.type.ConditionType
+import dev.chinh.itcanclick.task.util.RectangleSerializer
+import kotlinx.serialization.Serializable
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import javax.imageio.ImageIO
 
+@Serializable
 data class ConditionData(
     var originalImagePath: String?,
+    @Serializable(with = RectangleSerializer::class)
     var rect: Rectangle,
     var similarity: Float = 0.85f,
     var isCore: Boolean = false,
