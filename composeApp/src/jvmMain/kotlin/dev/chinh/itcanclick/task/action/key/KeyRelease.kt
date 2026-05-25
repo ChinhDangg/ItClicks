@@ -3,8 +3,10 @@ package dev.chinh.itcanclick.task.action.key
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
 import dev.chinh.itcanclick.task.action.ActionInfo
+import org.springframework.stereotype.Component
 import java.awt.Robot
 
+@Component
 class KeyRelease : KeyAction {
 
     private val robot : Robot

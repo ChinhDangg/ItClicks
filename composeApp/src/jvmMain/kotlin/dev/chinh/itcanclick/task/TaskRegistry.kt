@@ -14,24 +14,54 @@ import dev.chinh.itcanclick.task.wrapper.LoopTask
 import dev.chinh.itcanclick.task.wrapper.NormalWrapper
 import dev.chinh.itcanclick.task.wrapper.ScheduledTask
 import dev.chinh.itcanclick.task.type.*
+import org.springframework.stereotype.Service
 
-object TaskRegistry {
+@Service
+class TaskRegistry {
 
-    private val robot = java.awt.Robot()
+    private val mouseClick: MouseClick
+    private val mousePress: MousePress
+    private val mouseRelease: MouseRelease
+    private val keyClick: KeyClick
+    private val keyPress: KeyPress
+    private val keyRelease: KeyRelease
+    private val delayAction: Delay
+    private val pixelExactCondition: PixelExactCondition
+    private val pixelSimilarCondition: PixelSimilarCondition
+    private val textCondition: TextCondition
+    private val loopWrapper: LoopTask
+    private val scheduledWrapper: ScheduledTask
+    private val wrapper: NormalWrapper
 
-    private val mouseClick = MouseClick(robot)
-    private val mousePress = MousePress(robot)
-    private val mouseRelease = MouseRelease(robot)
-    private val keyClick = KeyClick(robot)
-    private val keyPress = KeyPress(robot)
-    private val keyRelease = KeyRelease(robot)
-    private val delayAction = Delay()
-    private val pixelExactCondition = PixelExactCondition(robot)
-    private val pixelSimilarCondition = PixelSimilarCondition(robot)
-    private val textCondition = TextCondition(robot)
-    private val loopWrapper = LoopTask()
-    private val scheduledWrapper = ScheduledTask()
-    private val wrapper = NormalWrapper()
+    constructor(
+        mouseClick: MouseClick,
+        mousePress: MousePress,
+        mouseRelease: MouseRelease,
+        keyClick: KeyClick,
+        keyPress: KeyPress,
+        keyRelease: KeyRelease,
+        delayAction: Delay,
+        pixelExactCondition: PixelExactCondition,
+        pixelSimilarCondition: PixelSimilarCondition,
+        textCondition: TextCondition,
+        loopWrapper: LoopTask,
+        scheduledWrapper: ScheduledTask,
+        wrapper: NormalWrapper
+    ) {
+        this.mouseClick = mouseClick
+        this.mousePress = mousePress
+        this.mouseRelease = mouseRelease
+        this.keyClick = keyClick
+        this.keyPress = keyPress
+        this.keyRelease = keyRelease
+        this.delayAction = delayAction
+        this.pixelExactCondition = pixelExactCondition
+        this.pixelSimilarCondition = pixelSimilarCondition
+        this.textCondition = textCondition
+        this.loopWrapper = loopWrapper
+        this.scheduledWrapper = scheduledWrapper
+        this.wrapper = wrapper
+    }
 
     @Suppress("UNCHECKED_CAST")
     fun <I> getTask(taskType: TaskType) : I {

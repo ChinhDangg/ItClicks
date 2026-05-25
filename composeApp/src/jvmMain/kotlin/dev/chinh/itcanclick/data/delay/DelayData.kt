@@ -12,7 +12,7 @@ data class DelayData(
 ) : TaskData<DelayInfo> {
 
     override val id: String = "delay-$delay"
-    override val name: String = "Delay"
+    override val name: String = "Delay-$delay"
     override val taskType: TaskType = OtherType.DELAY
 
     override fun getTaskInfo(): DelayInfo {

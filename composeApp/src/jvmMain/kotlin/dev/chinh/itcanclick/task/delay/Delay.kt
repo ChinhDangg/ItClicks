@@ -4,7 +4,9 @@ import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
 import dev.chinh.itcanclick.task.Task
 import kotlinx.coroutines.delay
+import org.springframework.stereotype.Component
 
+@Component
 class Delay : Task<DelayInfo> {
 
     override suspend fun execute(taskInfo: DelayInfo): Result {

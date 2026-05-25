@@ -1,11 +1,13 @@
 package dev.chinh.itcanclick.task.condition
 
 import dev.chinh.itcanclick.task.ResultStatus
+import org.springframework.stereotype.Component
 import java.awt.Rectangle
 import java.awt.Robot
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
+@Component
 class PixelExactCondition : PixelCondition {
 
     private val robot : Robot

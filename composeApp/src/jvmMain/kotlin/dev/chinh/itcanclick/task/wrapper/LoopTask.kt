@@ -2,7 +2,9 @@ package dev.chinh.itcanclick.task.wrapper
 
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
+import org.springframework.stereotype.Component
 
+@Component
 class LoopTask : TaskWrapper<LoopTaskInfo>() {
 
     override suspend fun execute(taskInfo: LoopTaskInfo): Result {

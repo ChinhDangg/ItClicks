@@ -3,9 +3,11 @@ package dev.chinh.itcanclick.task.action.mouse
 import dev.chinh.itcanclick.log.log
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
+import org.springframework.stereotype.Component
 import java.awt.Robot
 import java.awt.event.InputEvent
 
+@Component
 class MouseClick : MouseAction<MouseClickInfo> {
 
     private val robot : Robot

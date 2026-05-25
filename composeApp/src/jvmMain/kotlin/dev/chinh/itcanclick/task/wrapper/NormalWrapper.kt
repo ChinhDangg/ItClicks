@@ -1,7 +1,9 @@
 package dev.chinh.itcanclick.task.wrapper
 
 import dev.chinh.itcanclick.task.Result
+import org.springframework.stereotype.Component
 
+@Component
 class NormalWrapper : TaskWrapper<NormalWrapperInfo>() {
 
     override suspend fun execute(taskInfo: NormalWrapperInfo): Result {

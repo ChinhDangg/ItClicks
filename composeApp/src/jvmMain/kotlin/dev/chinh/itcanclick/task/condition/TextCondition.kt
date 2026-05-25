@@ -5,6 +5,7 @@ import org.bytedeco.javacpp.BytePointer
 import org.bytedeco.leptonica.global.leptonica.pixDestroy
 import org.bytedeco.leptonica.global.leptonica.pixReadMem
 import org.bytedeco.tesseract.TessBaseAPI
+import org.springframework.stereotype.Component
 import java.awt.Rectangle
 import java.awt.Robot
 import java.awt.image.BufferedImage
@@ -13,6 +14,7 @@ import java.nio.ByteBuffer
 import javax.imageio.ImageIO
 import kotlin.math.max
 
+@Component
 class TextCondition : Condition, AutoCloseable {
 
     private val robot : Robot
