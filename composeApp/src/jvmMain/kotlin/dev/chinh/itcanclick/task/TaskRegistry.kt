@@ -4,6 +4,7 @@ import dev.chinh.itcanclick.task.action.key.KeyClick
 import dev.chinh.itcanclick.task.action.key.KeyPress
 import dev.chinh.itcanclick.task.action.key.KeyRelease
 import dev.chinh.itcanclick.task.action.mouse.MouseClick
+import dev.chinh.itcanclick.task.action.mouse.MouseMove
 import dev.chinh.itcanclick.task.action.mouse.MousePress
 import dev.chinh.itcanclick.task.action.mouse.MouseRelease
 import dev.chinh.itcanclick.task.condition.PixelExactCondition
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service
 @Service
 class TaskRegistry {
 
+    private val mouseMove: MouseMove
     private val mouseClick: MouseClick
     private val mousePress: MousePress
     private val mouseRelease: MouseRelease
@@ -34,6 +36,7 @@ class TaskRegistry {
     private val wrapper: NormalWrapper
 
     constructor(
+        mouseMove: MouseMove,
         mouseClick: MouseClick,
         mousePress: MousePress,
         mouseRelease: MouseRelease,
@@ -48,6 +51,7 @@ class TaskRegistry {
         scheduledWrapper: ScheduledTask,
         wrapper: NormalWrapper
     ) {
+        this.mouseMove = mouseMove
         this.mouseClick = mouseClick
         this.mousePress = mousePress
         this.mouseRelease = mouseRelease
@@ -66,6 +70,7 @@ class TaskRegistry {
     @Suppress("UNCHECKED_CAST")
     fun <I> getTask(taskType: TaskType) : I {
         return when (taskType) {
+            MouseType.MOUSE_MOVE -> mouseMove
             MouseType.MOUSE_CLICK -> mouseClick
             MouseType.MOUSE_PRESS -> mousePress
             MouseType.MOUSE_RELEASE -> mouseRelease

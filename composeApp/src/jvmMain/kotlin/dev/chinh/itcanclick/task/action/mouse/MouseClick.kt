@@ -17,19 +17,17 @@ class MouseClick : MouseAction<MouseClickInfo> {
     }
 
     override fun perform(actionInfo: MouseClickInfo): Result {
-        val coord = click(actionInfo)
-        return Result(ResultStatus.PASS, "Mouse Clicked: $coord")
+        click(actionInfo)
+        return Result(ResultStatus.PASS, "Mouse Clicked")
     }
 
-    private fun click(mouseInfo: MouseClickInfo): Pair<Int, Int> {
-        val (x, y) = moveMouse(robot, mouseInfo)
+    private fun click(mouseInfo: MouseClickInfo) {
         repeat(mouseInfo.numClicks) {
             robot.delay(mouseInfo.delay)
             robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
             robot.delay(mouseInfo.delay)
             robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK)
-            log("Mouse Clicked at ($x, $y)")
+            log("Mouse Clicked")
         }
-        return Pair(x, y)
     }
 }

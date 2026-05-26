@@ -17,15 +17,13 @@ class MousePress : MouseAction<MouseBaseInfo> {
     }
 
     override fun perform(actionInfo: MouseBaseInfo): Result {
-        val coord = press(actionInfo)
-        return Result(ResultStatus.PASS, "Mouse Pressed: $coord")
+        press(actionInfo)
+        return Result(ResultStatus.PASS, "Mouse Pressed")
     }
 
-    private fun press(mouseInfo: MouseBaseInfo): Pair<Int, Int> {
-        val (x, y) = moveMouse(robot, mouseInfo)
+    private fun press(mouseInfo: MouseBaseInfo) {
         robot.delay(mouseInfo.delay)
         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
-        log("Mouse Pressed at ($x, $y)")
-        return Pair(x, y)
+        log("Mouse Pressed")
     }
 }
