@@ -3,16 +3,17 @@ package dev.chinh.itcanclick.task.wrapper
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
 import dev.chinh.itcanclick.task.Task
+import dev.chinh.itcanclick.task.TaskRegistry
 
-abstract class TaskWrapper<W : TaskWrapperInfo<W>> : Task<W> {
+interface TaskWrapper<W : TaskWrapperInfo<W>> : Task<W> {
 
-    suspend fun runTasks(taskWrapperInfo: TaskWrapperInfo<W>) : Result {
+    suspend fun runTasks(taskRegistry: TaskRegistry, taskWrapperInfo: TaskWrapperInfo<W>) : Result {
         var wrapperResult = Result(ResultStatus.PASS, "All tasks passed")
         for (taskInfo in taskWrapperInfo.tasksToRun) {
             taskWrapperInfo.result?.let {
                 taskInfo.passResult(it) // passing result from wrapper parent to inner
             }
-            val result = taskInfo.selfExecute()
+            val result = taskInfo.selfExecute(taskRegistry)
             when (result.result) {
                 ResultStatus.FAIL -> return result
                 ResultStatus.SKIP_PASS -> return result
