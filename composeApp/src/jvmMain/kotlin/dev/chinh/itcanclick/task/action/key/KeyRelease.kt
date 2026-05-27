@@ -6,8 +6,10 @@ import dev.chinh.itcanclick.task.action.ActionInfo
 import org.springframework.stereotype.Component
 import java.awt.Robot
 
-@Component
+@Component(KeyRelease.BEAN_NAME)
 class KeyRelease : KeyAction {
+
+    companion object { const val BEAN_NAME = "KEY_RELEASE" }
 
     private val robot : Robot
 

@@ -7,8 +7,10 @@ import java.awt.Robot
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
-@Component
+@Component(PixelExactCondition.BEAN_NAME)
 class PixelExactCondition : PixelCondition {
+
+    companion object { const val BEAN_NAME = "PIXEL_EXACT" }
 
     private val robot : Robot
 

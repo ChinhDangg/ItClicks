@@ -16,7 +16,7 @@ interface TaskInfo<T : TaskInfo<T>> {
     fun getSelf(): T
 
     suspend fun selfExecute(taskRegistry: TaskRegistry) : Result {
-        return taskRegistry.getTask<Task<T>>(taskType).execute(getSelf())
+        return taskRegistry.getTask<T>(taskType).execute(getSelf())
     }
 
     fun getTaskData(): TaskData<T>

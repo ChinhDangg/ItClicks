@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component
 import java.awt.Robot
 import java.awt.event.InputEvent
 
-@Component
+@Component(MouseRelease.BEAN_NAME)
 class MouseRelease : MouseAction<MouseBaseInfo> {
+
+    companion object { const val BEAN_NAME = "MOUSE_RELEASE" }
 
     private val robot : Robot
 

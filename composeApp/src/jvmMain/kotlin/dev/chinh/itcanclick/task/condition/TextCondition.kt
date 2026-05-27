@@ -14,8 +14,10 @@ import java.nio.ByteBuffer
 import javax.imageio.ImageIO
 import kotlin.math.max
 
-@Component
+@Component(TextCondition.BEAN_NAME)
 class TextCondition : Condition, AutoCloseable {
+
+    companion object { const val BEAN_NAME = "TEXT" }
 
     private val robot : Robot
 

@@ -5,8 +5,10 @@ import dev.chinh.itcanclick.task.ResultStatus
 import org.springframework.stereotype.Component
 import java.awt.Robot
 
-@Component
+@Component(KeyPress.BEAN_NAME)
 class KeyPress : KeyAction {
+
+    companion object { const val BEAN_NAME = "KEY_PRESS" }
 
     private val robot : Robot
 

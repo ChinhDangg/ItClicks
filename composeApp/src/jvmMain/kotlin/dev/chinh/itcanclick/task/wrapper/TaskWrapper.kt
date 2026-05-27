@@ -7,7 +7,9 @@ import dev.chinh.itcanclick.task.TaskRegistry
 
 interface TaskWrapper<W : TaskWrapperInfo<W>> : Task<W> {
 
-    suspend fun runTasks(taskRegistry: TaskRegistry, taskWrapperInfo: TaskWrapperInfo<W>) : Result {
+    val taskRegistry: TaskRegistry
+
+    suspend fun runTasks(taskWrapperInfo: TaskWrapperInfo<W>) : Result {
         var wrapperResult = Result(ResultStatus.PASS, "All tasks passed")
         for (taskInfo in taskWrapperInfo.tasksToRun) {
             taskWrapperInfo.result?.let {

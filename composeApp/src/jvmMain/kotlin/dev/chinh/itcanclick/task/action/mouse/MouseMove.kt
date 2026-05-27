@@ -5,8 +5,10 @@ import dev.chinh.itcanclick.task.ResultStatus
 import org.springframework.stereotype.Component
 import java.awt.Robot
 
-@Component
+@Component(MouseMove.BEAN_NAME)
 class MouseMove : MouseAction<MouseMoveInfo>{
+
+    companion object { const val BEAN_NAME = "MOUSE_MOVE" }
 
     private val robot : Robot
 

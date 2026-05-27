@@ -7,8 +7,10 @@ import java.awt.Robot
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
-@Component
+@Component(PixelSimilarCondition.BEAN_NAME)
 class PixelSimilarCondition : PixelCondition{
+
+    companion object { const val BEAN_NAME = "PIXEL_SIMILAR" }
 
     private val robot : Robot
 

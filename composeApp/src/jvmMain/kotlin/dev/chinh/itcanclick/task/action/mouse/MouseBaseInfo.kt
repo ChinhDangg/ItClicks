@@ -3,7 +3,6 @@ package dev.chinh.itcanclick.task.action.mouse
 import dev.chinh.itcanclick.data.action.mouse.MouseBaseData
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.type.MouseType
-import java.awt.Rectangle
 
 data class MouseBaseInfo(
     val delay: Int,
