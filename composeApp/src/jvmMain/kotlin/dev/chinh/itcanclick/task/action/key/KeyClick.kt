@@ -1,9 +1,11 @@
 package dev.chinh.itcanclick.task.action.key
 
+import dev.chinh.itcanclick.log.log
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
 import org.springframework.stereotype.Component
 import java.awt.Robot
+import java.awt.event.KeyEvent
 
 @Component(KeyClick.BEAN_NAME)
 class KeyClick : KeyAction {
@@ -25,5 +27,6 @@ class KeyClick : KeyAction {
         robot.keyPress(keyInfo.keyCode)
         robot.delay(keyInfo.delay)
         robot.keyRelease(keyInfo.keyCode)
+        log("Key Clicked: " + KeyEvent.getKeyText(keyInfo.keyCode))
     }
 }

@@ -1,5 +1,6 @@
 package dev.chinh.itcanclick.task.delay
 
+import dev.chinh.itcanclick.log.log
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.ResultStatus
 import dev.chinh.itcanclick.task.Task
@@ -18,5 +19,6 @@ class Delay : Task<DelayInfo> {
 
     suspend fun delayTask(delayInfo: DelayInfo) {
         delay(delayInfo.delay)
+        log("Delayed ${delayInfo.delay} ms")
     }
 }
