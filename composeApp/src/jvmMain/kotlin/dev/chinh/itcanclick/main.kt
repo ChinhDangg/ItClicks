@@ -22,7 +22,7 @@ fun main(args: Array<String>) = application {
             .run(*args)
 
     val state = rememberWindowState(
-        size = DpSize(400.dp, 350.dp)
+        size = DpSize(600.dp, 450.dp)
     )
 
     Window(

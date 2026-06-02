@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui
+package dev.chinh.itcanclick.ui.side
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import dev.chinh.itcanclick.ui.LayoutState
+
+@Composable
+fun LeftSidePanel(
+    layoutState: LayoutState
+) {
+    SidePanel {
+
+    }
+}
+
+@Composable
+fun RightSidePanel(
+    layoutState: LayoutState
+) {
+    SidePanel {
+
+    }
+}
 
 @Composable
 fun SidePanel(

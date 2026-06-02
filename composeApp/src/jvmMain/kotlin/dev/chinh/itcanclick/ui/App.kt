@@ -4,12 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
@@ -17,13 +12,34 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
-import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
-import org.jetbrains.compose.splitpane.HorizontalSplitPane
-import org.jetbrains.compose.splitpane.SplitterScope
-import org.jetbrains.compose.splitpane.VerticalSplitPane
-import org.jetbrains.compose.splitpane.rememberSplitPaneState
+import dev.chinh.itcanclick.ui.bottom.BottomPanel
+import dev.chinh.itcanclick.ui.bottom.BottomPanelState
+import dev.chinh.itcanclick.ui.side.*
+import org.jetbrains.compose.splitpane.*
 import org.jetbrains.skiko.Cursor
 
+
+class LayoutState {
+    var activeLeftPanel by mutableStateOf(LeftPanelState.NONE)
+        private set
+    var activeRightPanel by mutableStateOf(RightPanelState.NONE)
+        private set
+
+    var activeBottomPanel by mutableStateOf(BottomPanelState.NONE)
+        private set
+
+    fun toggleLeftPanel(panel: LeftPanelState) {
+        activeLeftPanel = if (activeLeftPanel == panel) LeftPanelState.NONE else panel
+    }
+
+    fun toggleRightPanel(panel: RightPanelState) {
+        activeRightPanel = if (activeRightPanel == panel) RightPanelState.NONE else panel
+    }
+
+    fun toggleBottomPanel(panel: BottomPanelState) {
+        activeBottomPanel = if (activeBottomPanel == panel) BottomPanelState.NONE else panel
+    }
+}
 
 @Composable
 fun WindowScope.App(exitApplication: () -> Unit) {
@@ -45,7 +61,6 @@ fun AppTheme(
     content: @Composable () -> Unit
 ) {
     val currentColorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
-
     MaterialTheme(
         colorScheme = currentColorScheme,
         content = content
@@ -56,71 +71,40 @@ fun AppTheme(
 @Composable
 @Preview
 fun mainLayout() {
-    Column(modifier = Modifier.fillMaxSize()) {
+    val layoutState = remember { LayoutState() }
 
+    val leftSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.2f)
+    val rightSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.75f)
+    val bottomSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.75f)
+
+    Column(modifier = Modifier.fillMaxSize()) {
         Row(
             Modifier
                 .fillMaxWidth()
                 .background(Color(MaterialTheme.colorScheme.background.value))
                 .weight(1f)
         ) {
-
             // Left Tool Window Bar (The narrow strip with vertical buttons)
-            LeftSideVerticalBar()
+            LeftSideVerticalBar(layoutState)
 
-            val verticalSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.75f)
-            VerticalSplitPane(
-                splitPaneState = verticalSplitterState,
-                modifier = Modifier.weight(1f).fillMaxHeight()
-            ) {
-                // --- TOP SECTION PANEL (Left + Center + Right) ---
-                first(minSize = 50.dp) {
-
-                    // Left-to-Center splitter
-                    val leftSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.2f)
-                    HorizontalSplitPane(
-                        splitPaneState = leftSplitterState,
-                        modifier = Modifier.weight(1f).fillMaxHeight()
-                    ) {
-                        first(minSize = 50.dp) {
-                            // Left Panel (e.g., Project Explorer)
-                            SidePanel() {}
-                        }
-                        second(minSize = 100.dp) {
-                            val rightSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.75f)
-                            HorizontalSplitPane(
-                                splitPaneState = rightSplitterState,
-                                modifier = Modifier.fillMaxSize()
-                            ) {
-                                first(minSize = 50.dp) {
-                                    // Main Content (e.g., Code Editor)
-                                    CenterPanel() {}
-                                }
-                                second(minSize = 50.dp) {
-                                    // Right Panel (e.g., Debug Console)
-                                    SidePanel() {}
-                                }
-                                splitter {
-                                    horizontalPaneSplitter()
-                                }
-                            }
-                        }
-                        // Custom visual for the drag handle
-                        splitter {
-                            horizontalPaneSplitter()
-                        }
-                    }
-                }
-
-                second(minSize = 50.dp) {
-                    BottomPanel() {}
-                }
-
-                // Custom visual for the drag handle
-                splitter {
-                    verticalPaneSplitter()
-                }
-            }
+            VerticalSplitLayout(
+                modifier = Modifier.weight(1f).fillMaxHeight(),
+                layoutState.activeBottomPanel != BottomPanelState.NONE,
+                bottomSplitterPane = bottomSplitterState,
+                topContent = {
+                    HorizontalSplitLayout(
+                        modifier = Modifier.fillMaxSize(),
+                        layoutState.activeLeftPanel != LeftPanelState.NONE,
+                        layoutState.activeRightPanel != RightPanelState.NONE,
+                        leftSplitterState = leftSplitterState,
+                        rightSplitterState = rightSplitterState,
+                        leftContent = { LeftSidePanel(layoutState) },
+                        centerContent = { CenterPanel() {} },
+                        rightContent = { RightSidePanel(layoutState) }
+                    )
+                },
+                bottomContent = { BottomPanel(layoutState) }
+            )
 
             // Right Tool Window Bar (The narrow strip with vertical buttons)
             RightSideVerticalBar()
@@ -128,6 +112,80 @@ fun mainLayout() {
 
         // BOTTOM STATUS BAR
         BottomHorizonalBar()
+    }
+}
+
+@OptIn(ExperimentalSplitPaneApi::class)
+@Composable
+fun VerticalSplitLayout(
+    modifier: Modifier = Modifier,
+    isBottomOpen: Boolean,
+    bottomSplitterPane: SplitPaneState,
+    topContent: @Composable () -> Unit,
+    bottomContent: @Composable () -> Unit
+) {
+    if (isBottomOpen) {
+        VerticalSplitPane(
+            splitPaneState = bottomSplitterPane,
+            modifier = modifier
+        ) {
+            first(minSize = 50.dp) { topContent() }
+            second(minSize = 50.dp) { bottomContent() }
+            // Custom visual for the drag handle
+            splitter { verticalPaneSplitter() }
+        }
+    } else {
+        Box(modifier = modifier) {
+            topContent()
+        }
+    }
+}
+
+@OptIn(ExperimentalSplitPaneApi::class)
+@Composable
+fun HorizontalSplitLayout(
+    modifier: Modifier = Modifier,
+    isLeftOpen: Boolean,
+    isRightOpen: Boolean,
+    leftSplitterState: SplitPaneState,
+    rightSplitterState: SplitPaneState,
+    leftContent: @Composable () -> Unit,
+    centerContent: @Composable () -> Unit,
+    rightContent: @Composable () -> Unit
+) {
+    if (isLeftOpen && isRightOpen) {
+        // Left-to-Center splitter
+        HorizontalSplitPane(
+            splitPaneState = leftSplitterState,
+            modifier = modifier
+        ) {
+            first(minSize = 50.dp) { leftContent() }
+            second(minSize = 100.dp) {
+                HorizontalSplitPane(
+                    splitPaneState = rightSplitterState,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    first(minSize = 50.dp) { centerContent() }
+                    second(minSize = 50.dp) { rightContent() }
+                    splitter { horizontalPaneSplitter() }
+                }
+            }
+            splitter { horizontalPaneSplitter() }
+        }
+    } else if (isLeftOpen && !isRightOpen) {
+        HorizontalSplitPane(splitPaneState = leftSplitterState, modifier = modifier) {
+            first(minSize = 50.dp) { leftContent() }
+            second(minSize = 100.dp) { centerContent() }
+            splitter { horizontalPaneSplitter() }
+        }
+    } else if (!isLeftOpen && isRightOpen) {
+        HorizontalSplitPane(splitPaneState = rightSplitterState, modifier = modifier) {
+            first(minSize = 100.dp) { centerContent() }
+            second(minSize = 50.dp) { rightContent() }
+            splitter { horizontalPaneSplitter() }
+        }
+    } else {
+        Box(modifier = modifier) { centerContent() }
     }
 }
 
