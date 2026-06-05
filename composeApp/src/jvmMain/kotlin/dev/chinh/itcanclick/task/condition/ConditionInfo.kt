@@ -1,6 +1,7 @@
 package dev.chinh.itcanclick.task.condition
 
 import dev.chinh.itcanclick.data.condition.ConditionData
+import dev.chinh.itcanclick.perform.TaskRegisterService
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.TaskInfo
 import dev.chinh.itcanclick.task.util.saveImage
@@ -13,11 +14,12 @@ data class ConditionInfo(
     val isCore: Boolean,
     val globalSearch: Boolean,
     val passingResult: Boolean,
-    override val id: String,
     override val name: String,
-    override val taskType: ConditionType,
-    override var result: Result?
+    override val taskType: ConditionType
 ) : TaskInfo<ConditionInfo> {
+
+    override val id: String = TaskRegisterService.generateId()
+    override var result: Result? = null
 
     override fun getSelf(): ConditionInfo = this
 

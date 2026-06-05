@@ -1,6 +1,7 @@
 package dev.chinh.itcanclick.task.wrapper
 
 import dev.chinh.itcanclick.data.wrapper.LoopTaskData
+import dev.chinh.itcanclick.perform.TaskRegisterService
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.TaskInfo
 import dev.chinh.itcanclick.task.type.WrapperType
@@ -8,11 +9,11 @@ import dev.chinh.itcanclick.task.type.WrapperType
 data class LoopTaskInfo(
     val numLoops: Int,
     override val tasksToRun: List<TaskInfo<*>>,
-    override val id: String,
     override val name: String,
     override var result: Result?
 ) : TaskWrapperInfo<LoopTaskInfo> {
 
+    override val id: String = TaskRegisterService.generateId()
     override val taskType: WrapperType = WrapperType.LOOPED_TASK
 
     override fun getSelf(): LoopTaskInfo = this

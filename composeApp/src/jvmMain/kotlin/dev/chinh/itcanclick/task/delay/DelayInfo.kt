@@ -7,13 +7,13 @@ import dev.chinh.itcanclick.task.type.OtherType
 import dev.chinh.itcanclick.task.type.TaskType
 
 data class DelayInfo(
-    val delay: Long,
-    override var result: Result?
+    val delay: Long
 ) : TaskInfo<DelayInfo> {
 
     override val id: String = "delay-$delay"
     override val name: String = "Delay"
     override val taskType: TaskType = OtherType.DELAY
+    override var result: Result? = null
 
     override fun getSelf(): DelayInfo = this
 
