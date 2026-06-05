@@ -9,10 +9,10 @@ import dev.chinh.itcanclick.task.type.MouseType
 data class MouseClickInfo(
     val numClicks: Int,
     val delay: Int,
-    override val name: String
+    override val name: String,
+    override val id: String = TaskRegisterService.generateId()
 ) : MouseInfo<MouseClickInfo> {
 
-    override val id: String = TaskRegisterService.generateId()
     override val taskType: MouseType = MouseType.MOUSE_CLICK
     override var result: Result? = null
 

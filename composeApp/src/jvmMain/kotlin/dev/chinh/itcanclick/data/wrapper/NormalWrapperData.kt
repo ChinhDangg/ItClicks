@@ -18,8 +18,7 @@ data class NormalWrapperData(
     override fun getMinimalTaskInfo(): NormalWrapperInfo {
         return NormalWrapperInfo(
             taskDataList.map { it.getTaskInfo() },
-            id, name,
-            null
+            name, id
         )
     }
 

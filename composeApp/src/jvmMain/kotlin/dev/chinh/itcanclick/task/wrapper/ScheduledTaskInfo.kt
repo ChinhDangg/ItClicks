@@ -11,10 +11,9 @@ data class ScheduledTaskInfo(
     override val tasksToRun: List<TaskInfo<*>>,
     override var result: Result?,
     override val name: String,
-    override val taskType: TaskType
-) : TaskWrapperInfo<ScheduledTaskInfo> {
-
+    override val taskType: TaskType,
     override val id: String = TaskRegisterService.generateId()
+) : TaskWrapperInfo<ScheduledTaskInfo> {
 
     override fun getSelf(): ScheduledTaskInfo = this
 

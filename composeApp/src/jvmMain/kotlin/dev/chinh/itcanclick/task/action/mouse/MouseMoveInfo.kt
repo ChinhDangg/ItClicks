@@ -1,6 +1,7 @@
 package dev.chinh.itcanclick.task.action.mouse
 
 import dev.chinh.itcanclick.data.action.mouse.MouseMoveData
+import dev.chinh.itcanclick.perform.TaskRegisterService
 import dev.chinh.itcanclick.task.Result
 import dev.chinh.itcanclick.task.condition.ConditionResult
 import dev.chinh.itcanclick.task.type.MouseType
@@ -9,12 +10,12 @@ import java.awt.Rectangle
 data class MouseMoveInfo(
     var rect: Rectangle,
     val isExact: Boolean,
-    override val id: String,
     override val name: String,
-    override var result: Result?
+    override val id: String = TaskRegisterService.generateId()
 ) : MouseInfo<MouseMoveInfo> {
 
     override val taskType: MouseType = MouseType.MOUSE_MOVE
+    override var result: Result? = null
 
     override fun getSelf(): MouseMoveInfo = this
 

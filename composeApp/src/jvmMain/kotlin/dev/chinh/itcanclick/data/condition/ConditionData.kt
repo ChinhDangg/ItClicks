@@ -37,8 +37,7 @@ data class ConditionData(
         return ConditionInfo(
             null,
             rect, similarity, isCore, globalSearch, passingResult,
-            id, name, taskType,
-            null
+            name, taskType, id
         )
     }
 

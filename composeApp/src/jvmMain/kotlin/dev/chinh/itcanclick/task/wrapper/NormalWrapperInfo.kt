@@ -10,11 +10,11 @@ import dev.chinh.itcanclick.task.type.WrapperType
 data class NormalWrapperInfo(
     override val tasksToRun: List<TaskInfo<*>>,
     override val name: String,
-    override var result: Result?
+    override val id: String = TaskRegisterService.generateId()
 ): TaskWrapperInfo<NormalWrapperInfo> {
 
-    override val id: String = TaskRegisterService.generateId()
     override val taskType: TaskType = WrapperType.NORMAL_WRAPPER
+    override var result: Result? = null
 
     override fun getSelf(): NormalWrapperInfo = this
 

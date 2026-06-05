@@ -15,10 +15,10 @@ data class ConditionInfo(
     val globalSearch: Boolean,
     val passingResult: Boolean,
     override val name: String,
-    override val taskType: ConditionType
+    override val taskType: ConditionType,
+    override val id: String = TaskRegisterService.generateId()
 ) : TaskInfo<ConditionInfo> {
 
-    override val id: String = TaskRegisterService.generateId()
     override var result: Result? = null
 
     override fun getSelf(): ConditionInfo = this

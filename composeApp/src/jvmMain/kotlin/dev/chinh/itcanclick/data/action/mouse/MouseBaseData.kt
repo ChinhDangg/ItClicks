@@ -14,9 +14,7 @@ data class MouseBaseData(
 
     override fun getMinimalTaskInfo(): MouseBaseInfo {
         return MouseBaseInfo(
-            delay,
-            id, name, taskType,
-            null
+            delay, name, taskType, id
         )
     }
 }

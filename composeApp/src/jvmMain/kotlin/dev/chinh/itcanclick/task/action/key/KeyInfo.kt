@@ -11,9 +11,9 @@ data class KeyInfo(
     val delay: Int,
     override val name: String,
     override val taskType: KeyType,
+    override val id: String = TaskRegisterService.generateId()
 ) : ActionInfo<KeyInfo> {
 
-    override val id: String = TaskRegisterService.generateId()
     override var result: Result? = null
 
     override fun getSelf(): KeyInfo = this

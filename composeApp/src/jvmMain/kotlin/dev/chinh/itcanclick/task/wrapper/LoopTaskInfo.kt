@@ -10,11 +10,11 @@ data class LoopTaskInfo(
     val numLoops: Int,
     override val tasksToRun: List<TaskInfo<*>>,
     override val name: String,
-    override var result: Result?
+    override val id: String = TaskRegisterService.generateId()
 ) : TaskWrapperInfo<LoopTaskInfo> {
 
-    override val id: String = TaskRegisterService.generateId()
     override val taskType: WrapperType = WrapperType.LOOPED_TASK
+    override var result: Result? = null
 
     override fun getSelf(): LoopTaskInfo = this
 

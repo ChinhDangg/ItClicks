@@ -17,8 +17,7 @@ data class KeyData(
     override fun getMinimalTaskInfo(): KeyInfo {
         return KeyInfo(
             keyCode, delay,
-            id, name, taskType,
-            null
+            name, taskType, id
         )
     }
 }

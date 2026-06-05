@@ -14,9 +14,7 @@ data class MouseClickData(
 
     override fun getMinimalTaskInfo(): MouseClickInfo {
         return MouseClickInfo(
-            numClicks, delay,
-            id, name,
-            null
+            numClicks, delay, name, id
         )
     }
 

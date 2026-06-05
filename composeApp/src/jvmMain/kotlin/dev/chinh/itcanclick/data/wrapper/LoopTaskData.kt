@@ -20,9 +20,7 @@ data class LoopTaskData(
         val taskInfoList = taskDataList.map { it.getTaskInfo() }
         return LoopTaskInfo(
             numLoops,
-            taskInfoList,
-            id, name,
-            null
+            taskInfoList, name, id
         )
     }
 }

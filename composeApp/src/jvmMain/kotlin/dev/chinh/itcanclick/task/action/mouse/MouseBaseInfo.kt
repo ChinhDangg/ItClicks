@@ -9,9 +9,9 @@ data class MouseBaseInfo(
     val delay: Int,
     override val name: String,
     override val taskType: MouseType,
+    override val id: String = TaskRegisterService.generateId()
 ) : MouseInfo<MouseBaseInfo> {
 
-    override val id: String = TaskRegisterService.generateId()
     override var result: Result? = null
 
     override fun getSelf(): MouseBaseInfo = this

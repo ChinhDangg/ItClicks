@@ -19,8 +19,7 @@ data class MouseMoveData(
 
     override fun getMinimalTaskInfo(): MouseMoveInfo {
         return MouseMoveInfo(
-            rect, isExact, id, name,
-            null
+            rect, isExact, name, id
         )
     }
 }

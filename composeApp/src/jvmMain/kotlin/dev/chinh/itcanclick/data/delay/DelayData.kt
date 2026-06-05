@@ -20,6 +20,6 @@ data class DelayData(
     }
 
     override fun getMinimalTaskInfo(): DelayInfo {
-        return DelayInfo(delay, null)
+        return DelayInfo(delay)
     }
 }
