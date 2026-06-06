@@ -13,7 +13,9 @@ class TaskRegisterService {
         tasks[taskInfo.id] = taskInfo
     }
 
-    fun generateId(provided: String? = null) : String {
-        return provided ?: UUID.randomUUID().toString()
+    companion object {
+        fun generateId(provided: String? = null) : String {
+            return provided ?: UUID.randomUUID().toString()
+        }
     }
 }

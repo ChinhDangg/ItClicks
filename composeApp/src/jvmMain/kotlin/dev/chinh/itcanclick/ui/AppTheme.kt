@@ -6,12 +6,12 @@ import androidx.compose.ui.graphics.Color
 
 val BackgroundDark = Color(0xFF26282B) // Main background
 val SurfaceDark = Color(0xFF191A1C)    // Panels/cards/topbars
-val PrimaryDark = Color(0xFF3C3F41)    // Subtle elevated components
+val PrimaryDark = Color(0xFF1E1F22)    // Subtle elevated components
 val SecondaryDark = Color(0xFF4E5254)
 val OnBackgroundDark = Color(0xFFE8E8E8)
 val OnSurfaceDark = Color(0xFFD6D6D6)
 val OnPrimaryDark = Color(0xFFE8E8E8)
-val OnSecondaryDark = Color(0xFFD6D6D6)
+val OnSecondaryDark = Color(0xFF7E57C2)
 val OutlineDark = Color(0xFF5A5D5F)
 val SurfaceVariantDark = Color(0xFF2F3133)
 

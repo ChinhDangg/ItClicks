@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui.bottom
+package dev.chinh.itcanclick.ui.layout.bottom
 
 enum class BottomPanelState {
     NONE,

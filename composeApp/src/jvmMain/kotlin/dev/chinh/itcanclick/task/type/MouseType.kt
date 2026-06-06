@@ -8,10 +8,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class MouseType(
-    override val typeName: String
+    override val typeName: String,
+    override val displayName: String
 ) : TaskType {
-    MOUSE_MOVE(MouseMove.BEAN_NAME),
-    MOUSE_CLICK(MouseClick.BEAN_NAME),
-    MOUSE_PRESS(MousePress.BEAN_NAME),
-    MOUSE_RELEASE(MouseRelease.BEAN_NAME)
+    MOUSE_MOVE(MouseMove.BEAN_NAME, "Mouse Move"),
+    MOUSE_CLICK(MouseClick.BEAN_NAME, "Mouse Click"),
+    MOUSE_PRESS(MousePress.BEAN_NAME, "Mouse Press"),
+    MOUSE_RELEASE(MouseRelease.BEAN_NAME, "Mouse Release")
 }

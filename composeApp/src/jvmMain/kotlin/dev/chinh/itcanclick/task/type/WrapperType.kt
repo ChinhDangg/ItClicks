@@ -7,9 +7,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class WrapperType(
-    override val typeName: String
+    override val typeName: String,
+    override val displayName: String
 ) : TaskType{
-    LOOPED_TASK(LoopTask.BEAN_NAME),
-    NORMAL_WRAPPER(NormalWrapper.BEAN_NAME),
-    SCHEDULED_TASK(ScheduledTask.BEAN_NAME)
+    LOOPED_TASK(LoopTask.BEAN_NAME, "Loop"),
+    NORMAL_WRAPPER(NormalWrapper.BEAN_NAME, "Normal Wrapper"),
+    SCHEDULED_TASK(ScheduledTask.BEAN_NAME, "Schedule")
 }

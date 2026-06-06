@@ -12,9 +12,16 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
-import dev.chinh.itcanclick.ui.bottom.BottomPanel
-import dev.chinh.itcanclick.ui.bottom.BottomPanelState
-import dev.chinh.itcanclick.ui.side.*
+import dev.chinh.itcanclick.ui.layout.bottom.BottomPanel
+import dev.chinh.itcanclick.ui.layout.bottom.BottomPanelState
+import dev.chinh.itcanclick.ui.layout.center.CenterPanel
+import dev.chinh.itcanclick.ui.layout.center.TaskSelectionScreen
+import dev.chinh.itcanclick.ui.layout.side.LeftPanelState
+import dev.chinh.itcanclick.ui.layout.side.LeftSidePanel
+import dev.chinh.itcanclick.ui.layout.side.LeftSideVerticalBar
+import dev.chinh.itcanclick.ui.layout.side.RightPanelState
+import dev.chinh.itcanclick.ui.layout.side.RightSidePanel
+import dev.chinh.itcanclick.ui.layout.side.RightSideVerticalBar
 import org.jetbrains.compose.splitpane.*
 import org.jetbrains.skiko.Cursor
 
@@ -99,7 +106,7 @@ fun mainLayout() {
                         leftSplitterState = leftSplitterState,
                         rightSplitterState = rightSplitterState,
                         leftContent = { LeftSidePanel(layoutState) },
-                        centerContent = { CenterPanel() {} },
+                        centerContent = { CenterPanel() { TaskSelectionScreen() } },
                         rightContent = { RightSidePanel(layoutState) }
                     )
                 },
@@ -107,7 +114,7 @@ fun mainLayout() {
             )
 
             // Right Tool Window Bar (The narrow strip with vertical buttons)
-            RightSideVerticalBar()
+            RightSideVerticalBar(layoutState)
         }
 
         // BOTTOM STATUS BAR
