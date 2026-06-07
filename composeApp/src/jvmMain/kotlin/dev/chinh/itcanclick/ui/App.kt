@@ -24,6 +24,7 @@ import dev.chinh.itcanclick.ui.layout.side.RightSidePanel
 import dev.chinh.itcanclick.ui.layout.side.RightSideVerticalBar
 import org.jetbrains.compose.splitpane.*
 import org.jetbrains.skiko.Cursor
+import org.springframework.context.ApplicationContext
 
 
 class LayoutState {
@@ -49,7 +50,10 @@ class LayoutState {
 }
 
 @Composable
-fun WindowScope.App(exitApplication: () -> Unit) {
+fun WindowScope.App(
+    applicationContext: ApplicationContext,
+    exitApplication: () -> Unit
+) {
     var isDarkTheme by remember { mutableStateOf(true) }
 
     AppTheme(isDarkTheme = isDarkTheme) {
@@ -57,7 +61,7 @@ fun WindowScope.App(exitApplication: () -> Unit) {
             WindowDraggableArea {
                 TopHorizontalBar(exitApplication)
             }
-            mainLayout()
+            mainLayout(applicationContext)
         }
     }
 }
@@ -76,8 +80,9 @@ fun AppTheme(
 
 @OptIn(ExperimentalSplitPaneApi::class)
 @Composable
-@Preview
-fun mainLayout() {
+fun mainLayout(
+    applicationContext: ApplicationContext
+) {
     val layoutState = remember { LayoutState() }
 
     val leftSplitterState = rememberSplitPaneState(initialPositionPercentage = 0.2f)
@@ -106,7 +111,7 @@ fun mainLayout() {
                         leftSplitterState = leftSplitterState,
                         rightSplitterState = rightSplitterState,
                         leftContent = { LeftSidePanel(layoutState) },
-                        centerContent = { CenterPanel() { TaskSelectionScreen() } },
+                        centerContent = { CenterPanel() { TaskSelectionScreen(applicationContext) } },
                         rightContent = { RightSidePanel(layoutState) }
                     )
                 },

@@ -23,15 +23,16 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chinh.itcanclick.task.TaskInfo
 import dev.chinh.itcanclick.task.type.*
+import org.springframework.context.ApplicationContext
 
 @Composable
-@Preview
-fun TaskSelectionScreen() {
+fun TaskSelectionScreen(
+    applicationContext: ApplicationContext,
+) {
     // State to track which task is currently selected
     var selectedTask by remember { mutableStateOf<TaskType?>(null) }
 
@@ -80,6 +81,7 @@ fun TaskSelectionScreen() {
             // RIGHT COLUMN: Parameters
             TaskParameterPanel(
                 selectedTask = selectedTask,
+                applicationContext = applicationContext,
                 modifier = Modifier
                     .weight(2f) // 2 parts width (wider for settings)
                     .fillMaxHeight()
@@ -122,6 +124,7 @@ fun TaskSelectionList(
 @Composable
 fun TaskParameterPanel(
     selectedTask: TaskType?,
+    applicationContext: ApplicationContext,
     modifier: Modifier = Modifier
 ) {
     var savedTaskInfo by remember { mutableStateOf<TaskInfo<*>?>(null)}
@@ -137,8 +140,12 @@ fun TaskParameterPanel(
             when (selectedTask) {
                 is MouseType -> {
                     when (selectedTask) {
-                        MouseType.MOUSE_CLICK -> MouseClickSelection(
+                        MouseType.MOUSE_CLICK -> MouseClickEditor(
                             onClick = { savedTaskInfo = it }
+                        )
+                        MouseType.MOUSE_MOVE -> MouseMoveEditor(
+                            onClick = { savedTaskInfo = it },
+                            applicationContext = applicationContext
                         )
                         else -> {
                             // Example inputs for a Mouse Task
@@ -367,6 +374,37 @@ fun TextButton(
             text = displayText,
             fontSize = 12.sp,
             fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+
+@Composable
+fun LabeledCheckbox(
+    text: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onCheckedChange(!checked)
+            }
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = null // handled by Row clickable
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 }

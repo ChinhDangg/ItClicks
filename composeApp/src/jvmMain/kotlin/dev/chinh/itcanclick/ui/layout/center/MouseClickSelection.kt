@@ -17,7 +17,7 @@ class MouseClickSelectionState(
 }
 
 @Composable
-fun MouseClickSelection(
+fun MouseClickEditor(
     onClick: (MouseClickInfo) -> Unit, // Callback to \"return\" the data
     modifier: Modifier = Modifier
 ) {
@@ -33,12 +33,12 @@ fun MouseClickSelection(
             onClick(newInfo)
         }
     ) {
-        MouseSelection(formState, modifier)
+        MouseClickSelection(formState, modifier)
     }
 }
 
 @Composable
-fun MouseSelection(
+fun MouseClickSelection(
     state: MouseClickSelectionState,
     modifier: Modifier = Modifier
 ) {
