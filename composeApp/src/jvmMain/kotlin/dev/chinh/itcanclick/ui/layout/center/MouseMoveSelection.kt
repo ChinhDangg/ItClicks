@@ -9,6 +9,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.chinh.itcanclick.task.action.mouse.MouseMoveInfo
@@ -34,11 +36,17 @@ import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
 class MouseMoveSelectionState(
-    initialRect: Rectangle? = null,
+    initialX: Int = 0,
+    initialY: Int = 0,
+    initialWidth: Int = 50,
+    initialHeight: Int = 50,
     initialIsExact: Boolean = false,
     initialName: String = "Mouse Move"
 ) {
-    var rect by mutableStateOf(initialRect)
+    var x by mutableStateOf(initialX)
+    var y by mutableStateOf(initialY)
+    var width by mutableStateOf(initialWidth)
+    var height by mutableStateOf(initialHeight)
     var isExact by mutableStateOf(initialIsExact)
     var name by mutableStateOf(initialName)
 }
@@ -69,8 +77,6 @@ fun MouseMoveSelection(
 
     var isExact by remember { mutableStateOf(state.isExact) }
     val captureModel = remember { applicationContext.getBean<CaptureScreenModel>() }
-    var width by remember { mutableStateOf(50) }
-    var height by remember { mutableStateOf(50) }
 
     Column(
         modifier = modifier
@@ -86,7 +92,7 @@ fun MouseMoveSelection(
         ) {}
 
         val onStartClick = {
-            captureModel.startCapture(width, height)
+            captureModel.startCapture()
         }
         val onStopClick = {
             captureModel.stopCapture()
@@ -95,11 +101,7 @@ fun MouseMoveSelection(
         LabeledCheckbox("Exact", isExact, onCheckedChange = { isExact = it })
 
         ImageViewerScreen(
-            image = captureModel.image,
-            x = captureModel.x,
-            y = captureModel.y,
-            width = width,
-            height = height,
+            captureModel = captureModel,
             onStartClick = onStartClick,
             onStopClick = onStopClick
         )
@@ -109,11 +111,7 @@ fun MouseMoveSelection(
 
 @Composable
 fun ImageViewerScreen(
-    image: ImageBitmap?,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int,
+    captureModel: CaptureScreenModel,
     onStartClick: () -> Unit,
     onStopClick: () -> Unit
 ) {
@@ -129,9 +127,9 @@ fun ImageViewerScreen(
                 .aspectRatio(16f / 9f),
             shape = RoundedCornerShape(20.dp)
         ) {
-            if (image != null) {
+            if (captureModel.image != null) {
                 Image(
-                    bitmap = image,
+                    bitmap = captureModel.image!!,
                     contentDescription = "Captured screen",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Fit
@@ -170,20 +168,77 @@ fun ImageViewerScreen(
 
         // Coordinate Info
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(5.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                .fillMaxWidth()
         ) {
 
-            Column {
-                CoordinateItem("X:", x.toString())
-                CoordinateItem("Y:", y.toString())
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(1f)
+            ) {
+                TextField(
+                    textContent = "X:",
+                    value = captureModel.x.toString(),
+                    onValueChange = {
+                        captureModel.x = it.toIntOrNull() ?: 0
+                    }
+                ) {}
+                TextField(
+                    textContent = "Y:",
+                    value = captureModel.y.toString(),
+                    onValueChange = {
+                        captureModel.y = it.toIntOrNull() ?: 0
+                    }
+                ) {}
             }
 
-            Column {
-                CoordinateItem("W:", width.toString())
-                CoordinateItem("H:", height.toString())
+            Spacer(modifier = Modifier.width(10.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.weight(4f),
+            ) {
+                TextField(
+                    textContent = "W:",
+                    value = captureModel.width.toString(),
+                    onValueChange = {
+                        val value = it.toIntOrNull() ?: 0
+                        captureModel.width = value
+                    }
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        TextButton("+10", onClick = {
+                            captureModel.width += 10
+                        })
+                        TextButton("-1", onClick = {
+                            captureModel.width -= 1
+                        })
+                    }
+                }
+
+                TextField(
+                    textContent = "H:",
+                    value = captureModel.height.toString(),
+                    onValueChange = {
+                        val value = it.toIntOrNull() ?: 0
+                        captureModel.height = value
+                    }
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        TextButton("+10", onClick = {
+                            captureModel.height += 10
+                        })
+                        TextButton("-1", onClick = {
+                            captureModel.height -= 1
+                        })
+                    }
+                }
             }
         }
 
@@ -203,24 +258,26 @@ fun ImageViewerScreen(
 @Composable
 private fun CoordinateItem(
     label: String,
-    value: String
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
     Row(
-        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = label,
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
+            fontSize = 12.sp
         )
 
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.width(6.dp))
 
-        Text(
-            text = value,
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.titleMedium
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            modifier = Modifier.width(70.dp)
         )
     }
 }

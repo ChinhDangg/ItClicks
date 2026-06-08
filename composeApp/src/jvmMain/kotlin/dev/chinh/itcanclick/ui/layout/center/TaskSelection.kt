@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -347,7 +348,7 @@ fun TextButton(
             onClick()
         },
         modifier = Modifier
-            .height(33.dp)
+            .height(32.dp)
             .width(64.dp)
             .pointerHoverIcon(PointerIcon.Hand)
             .onPointerEvent(PointerEventType.Enter) {
@@ -397,14 +398,20 @@ fun LabeledCheckbox(
     ) {
         Checkbox(
             checked = checked,
-            onCheckedChange = null // handled by Row clickable
+            onCheckedChange = null, // handled by Row clickable,
+            modifier = Modifier.scale(0.8f),
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colorScheme.onSecondary,
+            )
         )
 
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontSize = 12.sp
         )
     }
 }
