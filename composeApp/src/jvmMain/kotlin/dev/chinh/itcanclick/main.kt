@@ -32,6 +32,6 @@ fun main(args: Array<String>) = application {
         state = state,
         alwaysOnTop = true
     ) {
-        App(::exitApplication)
+        App(applicationContext, ::exitApplication)
     }
 }
