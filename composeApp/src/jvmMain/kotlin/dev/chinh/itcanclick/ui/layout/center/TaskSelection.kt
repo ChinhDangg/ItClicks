@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -142,10 +144,10 @@ fun TaskParameterPanel(
                 is MouseType -> {
                     when (selectedTask) {
                         MouseType.MOUSE_CLICK -> MouseClickEditor(
-                            onClick = { savedTaskInfo = it }
+                            onClick = { savedTaskInfo = it; println(savedTaskInfo) }
                         )
                         MouseType.MOUSE_MOVE -> MouseMoveEditor(
-                            onClick = { savedTaskInfo = it },
+                            onClick = { savedTaskInfo = it; println(savedTaskInfo) },
                             applicationContext = applicationContext
                         )
                         else -> {
@@ -249,16 +251,22 @@ fun SelectionPanel(
         // Floating Save Button
         Button(
             onClick = onClickSaved,
+            shape = RoundedCornerShape(6.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.onSecondary,
+            ),
             modifier = Modifier
+                .height(30.dp)
                 .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            shape = RoundedCornerShape(12.dp),
+                .pointerHoverIcon(
+                    PointerIcon.Hand
+                ),
             contentPadding = PaddingValues(
                 horizontal = 24.dp,
-                vertical = 12.dp
+                vertical = 5.dp
             )
         ) {
-            Text("Save Task")
+            Text("Save")
         }
     }
 }
@@ -271,6 +279,10 @@ fun TextField(
     content: @Composable () -> Unit
 ) {
     var focused by remember { mutableStateOf(false) }
+    val customSelectionColors = TextSelectionColors(
+        handleColor = Color.White,
+        backgroundColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.5f)
+    )
 
     Column {
         Text(
@@ -284,52 +296,52 @@ fun TextField(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BasicTextField(
-                value = value,
-                onValueChange = {
-                    if (it.isEmpty() || it.all(Char::isDigit)) {
-                        onValueChange(it)
-                    }
-                },
-                cursorBrush = SolidColor(Color.White),
-                singleLine = true,
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .height(30.dp)
-                    .onFocusChanged {
-                        focused = it.isFocused
-                    }
-                    .border(
-                        width = 1.dp,
-                        color = if (focused)
-                            Color(MaterialTheme.colorScheme.onSecondary.value)
-                        else
-                            MaterialTheme.colorScheme.outline,
-                        shape = RoundedCornerShape(6.dp)
+            CompositionLocalProvider(
+                LocalTextSelectionColors provides customSelectionColors
+            ) {
+                BasicTextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    cursorBrush = SolidColor(Color.White),
+                    singleLine = true,
+                    textStyle = LocalTextStyle.current.copy(
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface
                     ),
-                decorationBox = { innerTextField ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 10.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        if (value.isEmpty()) {
-                            Text(
-                                text = "0",
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(30.dp)
+                        .onFocusChanged {
+                            focused = it.isFocused
                         }
+                        .border(
+                            width = 1.dp,
+                            color = if (focused)
+                                Color(MaterialTheme.colorScheme.onSecondary.value)
+                            else
+                                MaterialTheme.colorScheme.outline,
+                            shape = RoundedCornerShape(6.dp)
+                        ),
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 10.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            if (value.isEmpty()) {
+                                Text(
+                                    text = textContent,
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
 
-                        innerTextField()
+                            innerTextField()
+                        }
                     }
-                }
-            )
+                )
+            }
             content()
         }
     }

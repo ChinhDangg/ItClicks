@@ -5,35 +5,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dev.chinh.itcanclick.task.action.mouse.MouseMoveInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
-import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import java.awt.Rectangle
-import java.awt.Robot
-import java.awt.Toolkit
-import java.awt.image.BufferedImage
 
 class MouseMoveSelectionState(
     initialIsExact: Boolean = false,
@@ -49,7 +31,7 @@ fun MouseMoveEditor(
     applicationContext: ApplicationContext,
     modifier: Modifier = Modifier
 ) {
-    val formState = remember { MouseMoveSelectionState()}
+    val formState = remember { MouseMoveSelectionState() }
     val captureModel = remember { applicationContext.getBean<CaptureScreenModel>() }
 
     SelectionPanel(
@@ -72,8 +54,6 @@ fun MouseMoveSelection(
     captureModel: CaptureScreenModel,
     modifier: Modifier = Modifier
 ) {
-    var isExact by remember { mutableStateOf(state.isExact) }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -83,8 +63,10 @@ fun MouseMoveSelection(
         // Task Name Input
         TextField(
             "Task Name",
-            state.name,
-            onValueChange = { state.name = it },
+            value = state.name,
+            onValueChange = {
+                state.name = it
+            },
         ) {}
 
         val onStartClick = {
@@ -94,7 +76,7 @@ fun MouseMoveSelection(
             captureModel.stopCapture()
         }
 
-        LabeledCheckbox("Exact", isExact, onCheckedChange = { isExact = it })
+        LabeledCheckbox("Exact", state.isExact, onCheckedChange = { state.isExact = it })
 
         ImageViewerScreen(
             captureModel = captureModel,
@@ -248,32 +230,5 @@ fun ImageViewerScreen(
             TextButton("Start", onClick = onStartClick)
             TextButton("Stop", onClick = onStopClick)
         }
-    }
-}
-
-@Composable
-private fun CoordinateItem(
-    label: String,
-    value: String,
-    onValueChange: (String) -> Unit
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = label,
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.labelMedium,
-            fontSize = 12.sp
-        )
-
-        Spacer(modifier = Modifier.width(6.dp))
-
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            singleLine = true,
-            modifier = Modifier.width(70.dp)
-        )
     }
 }

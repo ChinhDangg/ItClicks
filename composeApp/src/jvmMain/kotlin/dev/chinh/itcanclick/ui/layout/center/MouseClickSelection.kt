@@ -8,8 +8,8 @@ import dev.chinh.itcanclick.task.action.mouse.MouseClickInfo
 
 class MouseClickSelectionState(
     initialName: String = "Mouse Click",
-    initialClicks: String = "1",
-    initialDelay: String = "0"
+    initialClicks: Int = 1,
+    initialDelay: Int = 0
 ) {
     var name by mutableStateOf(initialName)
     var numClicks by mutableStateOf(initialClicks)
@@ -26,8 +26,8 @@ fun MouseClickEditor(
     SelectionPanel(
         onClickSaved = {
             val newInfo = MouseClickInfo(
-                numClicks = formState.numClicks.toInt(),
-                delay = formState.delay.toInt(),
+                numClicks = formState.numClicks,
+                delay = formState.delay,
                 name = formState.name
             )
             onClick(newInfo)
@@ -58,15 +58,14 @@ fun MouseClickSelection(
         // Number of Clicks Input
         TextField(
             "Number of Clicks",
-            state.numClicks,
-            onValueChange = { state.numClicks = it }
+            state.numClicks.toString(),
+            onValueChange = { state.numClicks = it.toIntOrNull() ?: 0 }
         ) {
             Spacer(modifier = Modifier.width(5.dp))
             TextButton(
                 "+1",
                 onClick = {
-                    val current = state.numClicks.toIntOrNull() ?: 0
-                    state.numClicks = (current + 1).toString()
+                    state.numClicks += 1
                 }
             )
         }
@@ -74,15 +73,14 @@ fun MouseClickSelection(
         // Delay Input
         TextField(
             "Delay (milliseconds)",
-            state.delay,
-            onValueChange = { state.delay = it }
+            state.delay.toString(),
+            onValueChange = { state.delay = it.toIntOrNull() ?: 0 }
         ) {
             Spacer(modifier = Modifier.width(5.dp))
             TextButton(
                 "+50",
                 onClick = {
-                    val current = state.delay.toIntOrNull() ?: 0
-                    state.delay = (current + 50).toString()
+                    state.delay += 50
                 }
             )
         }
