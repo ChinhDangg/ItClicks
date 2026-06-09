@@ -36,17 +36,9 @@ import java.awt.Toolkit
 import java.awt.image.BufferedImage
 
 class MouseMoveSelectionState(
-    initialX: Int = 0,
-    initialY: Int = 0,
-    initialWidth: Int = 50,
-    initialHeight: Int = 50,
     initialIsExact: Boolean = false,
     initialName: String = "Mouse Move"
 ) {
-    var x by mutableStateOf(initialX)
-    var y by mutableStateOf(initialY)
-    var width by mutableStateOf(initialWidth)
-    var height by mutableStateOf(initialHeight)
     var isExact by mutableStateOf(initialIsExact)
     var name by mutableStateOf(initialName)
 }
@@ -58,25 +50,29 @@ fun MouseMoveEditor(
     modifier: Modifier = Modifier
 ) {
     val formState = remember { MouseMoveSelectionState()}
+    val captureModel = remember { applicationContext.getBean<CaptureScreenModel>() }
 
     SelectionPanel(
         onClickSaved = {
-
+            val newInfo = MouseMoveInfo(
+                Rectangle(captureModel.x, captureModel.y, captureModel.width, captureModel.height),
+                formState.isExact,
+                formState.name
+            )
+            onClick(newInfo)
         }
     ) {
-        MouseMoveSelection(formState, applicationContext, modifier)
+        MouseMoveSelection(formState, captureModel, modifier)
     }
 }
 
 @Composable
 fun MouseMoveSelection(
     state: MouseMoveSelectionState,
-    applicationContext: ApplicationContext,
+    captureModel: CaptureScreenModel,
     modifier: Modifier = Modifier
 ) {
-
     var isExact by remember { mutableStateOf(state.isExact) }
-    val captureModel = remember { applicationContext.getBean<CaptureScreenModel>() }
 
     Column(
         modifier = modifier
@@ -204,7 +200,7 @@ fun ImageViewerScreen(
                     textContent = "W:",
                     value = captureModel.width.toString(),
                     onValueChange = {
-                        val value = it.toIntOrNull() ?: 0
+                        val value = it.toIntOrNull() ?: 1
                         captureModel.width = value
                     }
                 ) {
@@ -224,7 +220,7 @@ fun ImageViewerScreen(
                     textContent = "H:",
                     value = captureModel.height.toString(),
                     onValueChange = {
-                        val value = it.toIntOrNull() ?: 0
+                        val value = it.toIntOrNull() ?: 1
                         captureModel.height = value
                     }
                 ) {

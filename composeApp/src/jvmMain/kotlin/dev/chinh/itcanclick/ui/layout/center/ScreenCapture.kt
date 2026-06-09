@@ -1,6 +1,8 @@
 package dev.chinh.itcanclick.ui.layout.center
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.lifecycle.ViewModel
@@ -54,17 +56,15 @@ class CaptureScreenModel(
 ): ViewModel() {
     private var captureJob: Job? = null
     private var _image = mutableStateOf<ImageBitmap?>(null)
-    private var _x = mutableStateOf(0)
-    private var _y = mutableStateOf(0)
+    var x by mutableStateOf(0)
+    var y by mutableStateOf(0)
+    var width by mutableStateOf(50)
+    var height by mutableStateOf(50)
 
     val image: ImageBitmap?
         get() = _image.value
-    val x: Int
-        get() = _x.value
-    val y: Int
-        get() = _y.value
 
-    fun startCapture(width: Int, height: Int) {
+    fun startCapture() {
         if (captureJob?.isActive == true) return
 
         captureJob = viewModelScope.launch(Dispatchers.IO) {
@@ -72,8 +72,8 @@ class CaptureScreenModel(
                 val mouseLoc = captureService.getCurrentMouseLoc()
                 val bufferedImage = captureService.captureRegion(mouseLoc.x, mouseLoc.y, width, height)
                 _image.value = bufferedImage.toComposeImageBitmap()
-                _x.value = mouseLoc.x
-                _y.value = mouseLoc.y
+                x = mouseLoc.x
+                y = mouseLoc.y
                 delay(100)
             }
         }
