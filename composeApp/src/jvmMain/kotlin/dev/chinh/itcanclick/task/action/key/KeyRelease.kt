@@ -19,11 +19,13 @@ class KeyRelease : KeyAction {
 
     override fun perform(actionInfo: KeyInfo): Result {
         release(actionInfo)
-        return Result(ResultStatus.PASS, "Key Released: " + actionInfo.keyCode)
+        return Result(ResultStatus.PASS, "Key Released: ${actionInfo.keyCodes.size} keys")
     }
 
     private fun release(keyInfo: KeyInfo) {
-        robot.delay(keyInfo.delay)
-        robot.keyRelease(keyInfo.keyCode)
+        for (keyCode in keyInfo.keyCodes) {
+            robot.delay(keyInfo.delay)
+            robot.keyRelease(keyCode)
+        }
     }
 }

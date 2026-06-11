@@ -18,12 +18,14 @@ class KeyPress : KeyAction {
 
     override fun perform(actionInfo: KeyInfo): Result {
         press(actionInfo)
-        return Result(ResultStatus.PASS, "Key Pressed: " + actionInfo.keyCode)
+        return Result(ResultStatus.PASS, "Key Pressed: ${actionInfo.keyCodes.size} keys")
     }
 
     private fun press(keyInfo: KeyInfo) {
-        robot.delay(keyInfo.delay)
-        robot.keyPress(keyInfo.keyCode)
+        for (keyCode in keyInfo.keyCodes) {
+            robot.delay(keyInfo.delay)
+            robot.keyPress(keyCode)
+        }
     }
 
 

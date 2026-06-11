@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class KeyData(
-    var keyCode: Int,
+    var keyCodes: List<Int>,
     var delay: Int = 0,
     override val id: String,
     override val name: String,
@@ -16,7 +16,7 @@ data class KeyData(
 
     override fun getMinimalTaskInfo(): KeyInfo {
         return KeyInfo(
-            keyCode, delay,
+            keyCodes, delay,
             name, taskType, id
         )
     }

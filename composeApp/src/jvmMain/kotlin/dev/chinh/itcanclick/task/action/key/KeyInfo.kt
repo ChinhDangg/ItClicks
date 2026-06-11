@@ -7,7 +7,7 @@ import dev.chinh.itcanclick.task.action.ActionInfo
 import dev.chinh.itcanclick.task.type.KeyType
 
 data class KeyInfo(
-    val keyCode: Int,
+    val keyCodes: List<Int>,
     val delay: Int,
     override val name: String,
     override val taskType: KeyType,
@@ -19,6 +19,6 @@ data class KeyInfo(
     override fun getSelf(): KeyInfo = this
 
     override fun getTaskData(): KeyData {
-        return KeyData(keyCode, delay, id, name, taskType)
+        return KeyData(keyCodes, delay, id, name, taskType)
     }
 }

@@ -20,13 +20,15 @@ class KeyClick : KeyAction {
 
     override fun perform(actionInfo: KeyInfo) : Result {
         click(actionInfo)
-        return Result(ResultStatus.PASS, "Key Clicked: " + actionInfo.keyCode)
+        return Result(ResultStatus.PASS, "Key Clicked: ${actionInfo.keyCodes.size} keys")
     }
 
     private fun click(keyInfo: KeyInfo) {
-        robot.keyPress(keyInfo.keyCode)
-        robot.delay(keyInfo.delay)
-        robot.keyRelease(keyInfo.keyCode)
-        log("Key Clicked: " + KeyEvent.getKeyText(keyInfo.keyCode))
+        for (keyCode in keyInfo.keyCodes) {
+            robot.keyPress(keyCode)
+            robot.delay(keyInfo.delay)
+            robot.keyRelease(keyCode)
+            log("Key Clicked: " + KeyEvent.getKeyText(keyCode))
+        }
     }
 }
