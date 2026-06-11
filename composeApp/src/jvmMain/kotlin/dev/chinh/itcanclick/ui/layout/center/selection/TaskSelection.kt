@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui.layout.center
+package dev.chinh.itcanclick.ui.layout.center.selection
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -30,6 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chinh.itcanclick.task.TaskInfo
 import dev.chinh.itcanclick.task.type.*
+import dev.chinh.itcanclick.ui.layout.center.selection.mouse.MouseClickEditor
+import dev.chinh.itcanclick.ui.layout.center.selection.mouse.MouseMoveEditor
+import dev.chinh.itcanclick.ui.layout.center.selection.mouse.MousePressEditor
+import dev.chinh.itcanclick.ui.layout.center.selection.mouse.MouseReleaseEditor
 import org.springframework.context.ApplicationContext
 
 @Composable

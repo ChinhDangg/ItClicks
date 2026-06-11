@@ -9,13 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
 import dev.chinh.itcanclick.ui.layout.bottom.BottomPanel
 import dev.chinh.itcanclick.ui.layout.bottom.BottomPanelState
-import dev.chinh.itcanclick.ui.layout.center.CenterPanel
-import dev.chinh.itcanclick.ui.layout.center.TaskSelectionScreen
+import dev.chinh.itcanclick.ui.layout.center.selection.CenterPanel
+import dev.chinh.itcanclick.ui.layout.center.selection.TaskSelectionScreen
 import dev.chinh.itcanclick.ui.layout.side.LeftPanelState
 import dev.chinh.itcanclick.ui.layout.side.LeftSidePanel
 import dev.chinh.itcanclick.ui.layout.side.LeftSideVerticalBar

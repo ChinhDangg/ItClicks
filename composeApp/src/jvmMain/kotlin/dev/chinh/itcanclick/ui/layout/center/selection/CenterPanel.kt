@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui.layout.center
+package dev.chinh.itcanclick.ui.layout.center.selection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

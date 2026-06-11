@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui.layout.center
+package dev.chinh.itcanclick.ui.layout.center.selection.mouse
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.chinh.itcanclick.task.action.mouse.MouseBaseInfo
 import dev.chinh.itcanclick.task.type.MouseType
+import dev.chinh.itcanclick.ui.layout.center.selection.SelectionPanel
+import dev.chinh.itcanclick.ui.layout.center.selection.TextButton
+import dev.chinh.itcanclick.ui.layout.center.selection.TextField
 
 class MouseReleaseSelectionState(
     initialDelay: Int = 0,

@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui.layout.center
+package dev.chinh.itcanclick.ui.layout.center.selection
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +14,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
+import java.awt.MouseInfo
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.Robot
@@ -46,7 +47,7 @@ class ScreenCaptureService(
     }
 
     fun getCurrentMouseLoc(): Point {
-        return java.awt.MouseInfo.getPointerInfo().location
+        return MouseInfo.getPointerInfo().location
     }
 }
 

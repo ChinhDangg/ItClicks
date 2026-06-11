@@ -1,4 +1,4 @@
-package dev.chinh.itcanclick.ui.layout.center
+package dev.chinh.itcanclick.ui.layout.center.selection.mouse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -11,8 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.chinh.itcanclick.task.action.mouse.MouseMoveInfo
+import dev.chinh.itcanclick.ui.layout.center.selection.CaptureScreenModel
+import dev.chinh.itcanclick.ui.layout.center.selection.LabeledCheckbox
+import dev.chinh.itcanclick.ui.layout.center.selection.SelectionPanel
+import dev.chinh.itcanclick.ui.layout.center.selection.TextButton
+import dev.chinh.itcanclick.ui.layout.center.selection.TextField
 import org.springframework.beans.factory.getBean
 import org.springframework.context.ApplicationContext
 import java.awt.Rectangle
@@ -76,7 +80,10 @@ fun MouseMoveSelection(
             captureModel.stopCapture()
         }
 
-        LabeledCheckbox("Exact", state.isExact, onCheckedChange = { state.isExact = it })
+        LabeledCheckbox(
+            "Exact",
+            state.isExact,
+            onCheckedChange = { state.isExact = it })
 
         ImageViewerScreen(
             captureModel = captureModel,

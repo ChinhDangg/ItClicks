@@ -1,45 +1,47 @@
-package dev.chinh.itcanclick.ui.layout.center
+package dev.chinh.itcanclick.ui.layout.center.selection.mouse
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.chinh.itcanclick.task.action.mouse.MouseClickInfo
+import dev.chinh.itcanclick.task.action.mouse.MouseBaseInfo
+import dev.chinh.itcanclick.task.type.MouseType
+import dev.chinh.itcanclick.ui.layout.center.selection.SelectionPanel
+import dev.chinh.itcanclick.ui.layout.center.selection.TextButton
+import dev.chinh.itcanclick.ui.layout.center.selection.TextField
 
-class MouseClickSelectionState(
-    initialName: String = "Mouse Click",
-    initialClicks: Int = 1,
+class MousePressSelectionState(
+    initialName: String = "Mouse Press",
     initialDelay: Int = 0
 ) {
     var name by mutableStateOf(initialName)
-    var numClicks by mutableStateOf(initialClicks)
     var delay by mutableStateOf(initialDelay)
 }
 
 @Composable
-fun MouseClickEditor(
-    onClick: (MouseClickInfo) -> Unit, // Callback to \"return\" the data
+fun MousePressEditor(
+    onClick: (MouseBaseInfo) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val formState = remember { MouseClickSelectionState() }
+    val formState = remember { MousePressSelectionState() }
 
     SelectionPanel(
         onClickSaved = {
-            val newInfo = MouseClickInfo(
-                numClicks = formState.numClicks,
-                delay = formState.delay,
-                name = formState.name
+            val newInfo = MouseBaseInfo(
+                formState.delay,
+                formState.name,
+                MouseType.MOUSE_PRESS
             )
             onClick(newInfo)
         }
     ) {
-        MouseClickSelection(formState, modifier)
+        MousePressSelection(formState, modifier)
     }
 }
 
 @Composable
-fun MouseClickSelection(
-    state: MouseClickSelectionState,
+fun MousePressSelection(
+    state: MousePressSelectionState,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -48,29 +50,12 @@ fun MouseClickSelection(
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Task Name Input
         TextField(
             "Task Name",
             state.name,
             onValueChange = { state.name = it },
         ) {}
 
-        // Number of Clicks Input
-        TextField(
-            "Number of Clicks",
-            state.numClicks.toString(),
-            onValueChange = { state.numClicks = it.toIntOrNull() ?: 0 }
-        ) {
-            Spacer(modifier = Modifier.width(5.dp))
-            TextButton(
-                "+1",
-                onClick = {
-                    state.numClicks += 1
-                }
-            )
-        }
-
-        // Delay Input
         TextField(
             "Delay (milliseconds)",
             state.delay.toString(),
