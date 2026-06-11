@@ -150,6 +150,9 @@ fun TaskParameterPanel(
                             onClick = { savedTaskInfo = it; println(savedTaskInfo) },
                             applicationContext = applicationContext
                         )
+                        MouseType.MOUSE_PRESS -> MousePressEditor(
+                            onClick = { savedTaskInfo = it; println(savedTaskInfo) }
+                        )
                         else -> {
                             // Example inputs for a Mouse Task
                             OutlinedTextField(
@@ -191,7 +194,8 @@ fun CategoryHeader(title: String) {
         fontSize = 12.sp,
         fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+        maxLines = 1,
     )
 }
 
@@ -220,8 +224,15 @@ fun TaskListItem(
                 onClick = onClick
             )
             .padding(horizontal = 15.dp, vertical = 5.dp)
+            .pointerHoverIcon(
+                PointerIcon.Hand
+            ),
     ) {
-        Text(text = task.displayName, color = MaterialTheme.colorScheme.onBackground, fontSize = 14.sp)
+        Text(
+            text = task.displayName,
+            color = MaterialTheme.colorScheme.onBackground, fontSize = 14.sp,
+            maxLines = 1,
+        )
     }
 }
 
@@ -405,7 +416,10 @@ fun LabeledCheckbox(
             .clickable {
                 onCheckedChange(!checked)
             }
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .pointerHoverIcon(
+                PointerIcon.Hand
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
