@@ -60,8 +60,7 @@ fun MouseMoveSelection(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(10.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Task Name Input

@@ -55,8 +55,7 @@ fun MouseReleaseSelection(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         TextField(
