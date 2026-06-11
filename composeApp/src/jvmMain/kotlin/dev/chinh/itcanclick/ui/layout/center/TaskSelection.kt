@@ -153,21 +153,9 @@ fun TaskParameterPanel(
                         MouseType.MOUSE_PRESS -> MousePressEditor(
                             onClick = { savedTaskInfo = it; println(savedTaskInfo) }
                         )
-                        else -> {
-                            // Example inputs for a Mouse Task
-                            OutlinedTextField(
-                                value = "0",
-                                onValueChange = {},
-                                label = { Text("X Coordinate") },
-                                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
-                            )
-                            OutlinedTextField(
-                                value = "0",
-                                onValueChange = {},
-                                label = { Text("Y Coordinate") },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                        MouseType.MOUSE_RELEASE -> MouseReleaseEditor(
+                            onClick = { savedTaskInfo = it; println(savedTaskInfo) }
+                        )
                     }
                 }
                 is KeyType -> {
