@@ -42,6 +42,8 @@ kotlin {
             implementation(libs.opencv.platform)
 
             implementation("org.bytedeco:tesseract-platform:5.5.1-1.5.12")
+
+            implementation("com.github.kwhat:jnativehook:2.2.2")
         }
     }
 }
