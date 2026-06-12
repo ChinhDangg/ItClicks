@@ -279,6 +279,8 @@ fun TextField(
     textContent: String,
     value: String,
     onValueChange: (String) -> Unit,
+    isSingleLine: Boolean = true,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     var focused by remember { mutableStateOf(false) }
@@ -306,12 +308,12 @@ fun TextField(
                     value = value,
                     onValueChange = onValueChange,
                     cursorBrush = SolidColor(Color.White),
-                    singleLine = true,
+                    singleLine = isSingleLine,
                     textStyle = LocalTextStyle.current.copy(
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     ),
-                    modifier = Modifier
+                    modifier = modifier
                         .weight(1f)
                         .height(30.dp)
                         .onFocusChanged {
